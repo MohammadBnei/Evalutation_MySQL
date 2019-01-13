@@ -4,7 +4,8 @@
   "description": "A simple blog",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
   },
   "repository": {
     "type": "git",
@@ -22,10 +23,11 @@
   },
   "homepage": "https://github.com/MohammadBnei/Evalutation_MySQL#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "mysql": "^2.16.0",
-    "npm": "^6.4.1",
-    "pug": "^2.0.3",
-    "socket.io": "^2.2.0"
+    "express": "*",
+    "mysql": "*",
+    "nodemon": "*",
+    "npm": "*",
+    "pug": "*",
+    "socket.io": "*"
   }
 }
