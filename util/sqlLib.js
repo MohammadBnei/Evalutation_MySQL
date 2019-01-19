@@ -82,7 +82,7 @@ var extractObjectInfos = (obj) => {
         // x_id
         idSet: ''
     }
-
+    console.log({obj})
     queryParams.idSet = Object.keys(obj).filter((key) => key.match(OBJ_ID_REGEX))[0];
     queryParams.id = obj[queryParams.idSet];
     queryParams.table = queryParams.idSet.slice(0, -3);

@@ -16,6 +16,9 @@
     "Blog",
     "MySQL"
   ],
+  "engines": {
+    "node": ">=10.6.0"
+  },
   "author": "Mohammad-Amine BANAEI",
   "license": "ISC",
   "bugs": {
@@ -23,20 +26,21 @@
   },
   "homepage": "https://github.com/MohammadBnei/Evalutation_MySQL#readme",
   "dependencies": {
-    "@joefallon/mysql-date": "^0.1.2",
+    "@joefallon/mysql-date": "*",
     "body-parser": "*",
-    "cookie-parser": "^1.4.3",
-    "eslint": "^5.12.0",
+    "crypto-js": "*",
+    "eslint": "*",
+    "eslint-plugin-node": "*",
     "express": "*",
-    "express-session": "^1.15.6",
-    "jade-bootstrap": "^1.0.14",
+    "express-mysql-session": "^2.1.0",
+    "express-session": "*",
+    "install": "*",
     "mysql": "*",
     "nodemon": "*",
     "npm": "*",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "passport.socketio": "^3.7.0",
-    "pug": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "session-memory-store": "*",
     "socket.io": "*"
   }
 }

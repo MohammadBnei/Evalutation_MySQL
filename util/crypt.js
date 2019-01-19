@@ -7,19 +7,7 @@ module.exports = {
     function rotate_left(n,s) {
         var t4 = ( n<<s ) | (n>>>(32-s));
         return t4;
-    };
-    function lsb_hex(val) {
-        var str='';
-        var i;
-        var vh;
-        var vl;
-        for( i=0; i<=6; i+=2 ) {
-            vh = (val>>>(i*4+4))&0x0f;
-            vl = (val>>>(i*4))&0x0f;
-            str += vh.toString(16) + vl.toString(16);
-        }
-        return str;
-    };
+    }
     function cvt_hex(val) {
         var str='';
         var i;
@@ -29,7 +17,7 @@ module.exports = {
             str += v.toString(16);
         }
         return str;
-    };
+    }
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,'\n');
         var utftext = '';
@@ -49,7 +37,7 @@ module.exports = {
             }
         }
         return utftext;
-    };
+    }
     var blockstart;
     var i, j;
     var W = new Array(80);
@@ -132,7 +120,7 @@ module.exports = {
         H3 = (H3 + D) & 0x0ffffffff;
         H4 = (H4 + E) & 0x0ffffffff;
     }
-    var temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+    temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
 
     return temp.toLowerCase();
     }

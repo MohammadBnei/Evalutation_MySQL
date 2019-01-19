@@ -5,10 +5,10 @@ var util = require('util');
 //create pool connection of MySQL
 var pool = mysql.createPool({
     connectionLimit: 100,
-    host: config.dbHost,
-    user: config.dbUser,
-    password: config.dbPassword,
-    database: config.dbName
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    database: config.database
 });
 
 pool.getConnection((err, connection) => {

@@ -1,6 +1,6 @@
 module.exports = {
-    dbHost: '192.168.99.100',
-    dbName: 'test',
-    dbUser: 'root',
-    dbPassword: 'password'
+    host: '192.168.99.100',
+    database: 'eval_mysql_db',
+    user: 'root',
+    password: 'password'
 }

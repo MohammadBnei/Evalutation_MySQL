@@ -16,10 +16,4 @@ module.exports = (router) => {
 
 	// Delete an user by its id
 	router.delete('/user/:id', userController.deleteUser);
-
-	// Sign up a user
-	router.post('/signup', userController.signUp);
-
-	// Sign in
-	router.post('/signin', passport.authenticate('local'), userController.signIn);
 }

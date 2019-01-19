@@ -1,10 +1,13 @@
 module.exports = (io) => {
-    var eventSocket = io.of('/events');
-
+    
     // on connection event
-    eventSocket.on('connection', function(socket){
+    io.on('connection', (socket) => {
         console.log('a user connected');
-        console.log({socketRequest: socket.request})
-        socket.emit('message', 'Vous etes biens connecté !');
+        socket.emit('server connection', 'Vous etes biens connecté !');
     });
+
+    // sending to the client
+    io.emit('hello', 'can you hear me?', 1, 2, 'abc');
+
+    io.on('hello back', () => console.log('Everything OK (SocketIo)'))
 };

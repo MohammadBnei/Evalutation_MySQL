@@ -8,52 +8,60 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema test
+-- Schema eavl_mysql_scheme
 -- -----------------------------------------------------
 -- First try to make a scheme using workbench
 
 -- -----------------------------------------------------
--- Schema test
+-- Schema eavl_mysql_scheme
 --
 -- First try to make a scheme using workbench
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8 ;
-USE `test` ;
+CREATE SCHEMA IF NOT EXISTS `eavl_mysql_scheme` DEFAULT CHARACTER SET utf8 ;
+USE `eavl_mysql_scheme` ;
 
 -- -----------------------------------------------------
--- Table `test`.`user`
+-- Table `eavl_mysql_scheme`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`user` (
+DROP TABLE IF EXISTS `eavl_mysql_scheme`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `eavl_mysql_scheme`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NULL,
   `surname` VARCHAR(255) NULL,
   `img` VARCHAR(255) NULL,
-  `password` VARCHAR(40) NULL,
+  `password` VARCHAR(40) NOT NULL,
   `isAdmin` TINYINT NULL,
   `createdAt` DATETIME NULL,
-  PRIMARY KEY (`user_id`))
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `test`.`category`
+-- Table `eavl_mysql_scheme`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`category` (
+DROP TABLE IF EXISTS `eavl_mysql_scheme`.`category` ;
+
+CREATE TABLE IF NOT EXISTS `eavl_mysql_scheme`.`category` (
   `category_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`category_id`))
+  PRIMARY KEY (`category_id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `test`.`article`
+-- Table `eavl_mysql_scheme`.`article`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`article` (
+DROP TABLE IF EXISTS `eavl_mysql_scheme`.`article` ;
+
+CREATE TABLE IF NOT EXISTS `eavl_mysql_scheme`.`article` (
   `article_id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
   `content` VARCHAR(255) NOT NULL,
-  `img` VARCHAR(255) NOT NULL,
+  `img` VARCHAR(255) NULL,
   `createdAt` DATETIME NOT NULL,
   `user_id` INT NOT NULL,
   `category_id` INT NOT NULL,
@@ -62,21 +70,23 @@ CREATE TABLE IF NOT EXISTS `test`.`article` (
   INDEX `fk_category_article_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_article`
     FOREIGN KEY (`user_id`)
-    REFERENCES `test`.`user` (`user_id`)
+    REFERENCES `eavl_mysql_scheme`.`user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_category_article`
     FOREIGN KEY (`category_id`)
-    REFERENCES `test`.`category` (`category_id`)
+    REFERENCES `eavl_mysql_scheme`.`category` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `test`.`comment`
+-- Table `eavl_mysql_scheme`.`comment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`comment` (
+DROP TABLE IF EXISTS `eavl_mysql_scheme`.`comment` ;
+
+CREATE TABLE IF NOT EXISTS `eavl_mysql_scheme`.`comment` (
   `comment_id` INT NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(255) NOT NULL,
   `createdAt` DATETIME NOT NULL,
@@ -87,12 +97,12 @@ CREATE TABLE IF NOT EXISTS `test`.`comment` (
   INDEX `fk_article_comment_idx` (`article_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_comment`
     FOREIGN KEY (`user_id`)
-    REFERENCES `test`.`user` (`user_id`)
+    REFERENCES `eavl_mysql_scheme`.`user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_article_comment`
     FOREIGN KEY (`article_id`)
-    REFERENCES `test`.`article` (`article_id`)
+    REFERENCES `eavl_mysql_scheme`.`article` (`article_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
