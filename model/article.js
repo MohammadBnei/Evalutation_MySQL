@@ -4,10 +4,12 @@ const sqlLib = require('../util/sqlLib');
 module.exports = {
     // CRUD
     async createArticle(article, user, category) {
-        var userColumn = {column: 'user_id', value: user.user_id};
-            categoryColumn = {column: 'category_id', value: category.category_id};
-            
-        var query = await pool.query(sqlLib.buildCreateQuery(article, 'article', [userColumn, categoryColumn]));
+        article = {...article,
+            user_id: user.user_id,
+            category_id: category.category_id
+            }
+
+        var query = await pool.query(sqlLib.buildCreateQuery(article, 'article'));
         var result = pool.query(sqlLib.buildFindByIdQuery({article_id: query.insertId}));
 
         return result;

@@ -6,12 +6,8 @@ module.exports = {
     getCommentsQuery: () => `SELECT * FROM comment`,
 
     // insert into TABLE (ELEMENTS, createdAt) values (VALUES, now());
-    buildCreateQuery: (obj, table, extraSets = []) => {
-        var sets = extractSets(obj);
-
-        if (extraSets.length) extraSets.forEach((set) => sets.push(set));
-
-        console.log({sets, extraSets});
+    buildCreateQuery: (obj, table) => {
+        var sets = extractSets(obj, false);
 
         var columns = '';
         sets.forEach((set) => columns += set.column + ',');
@@ -38,7 +34,7 @@ module.exports = {
     // update TABLE set ELEMENTS where id = ID;
     buildUpdateQuery: (obj) => {
         var queryParams = extractObjectInfos(obj);
-        var sets = extractSets(obj);
+        var sets = extractSets(obj, true);
 
         var querySet = '';
 
@@ -65,7 +61,7 @@ module.exports = {
 
     // select * from TABLE where CLAUSE
     buildFindByElemQuery(obj, table) {
-        var sets = extractSets(obj);
+        var sets = extractSets(obj, false);
         var whereClause = '';
 
         sets.forEach((set) => whereClause += set.column + ' = "' + set.value + '" AND ');
@@ -112,11 +108,13 @@ var extractObjectInfos = (obj) => {
 /*
  * Extract the update parameters for the SET clause of the query
  */
-var extractSets = (obj) => {
+var extractSets = (obj, removeIdFields) => {
     var set = [];
 
+    if (removeIdFields) obj = Object.keys(obj).filter((key) => !key.match(OBJ_ID_REGEX));
+
     Object.keys(obj).forEach((key) => {
-        if (obj[key] != undefined && !key.match(OBJ_ID_REGEX)) {
+        if (obj[key] != undefined) {
             if (typeof(obj[key]) === 'boolean') obj[key] = obj[key] ? 1 : 0;
             set.push({
                 column: key,

@@ -4,10 +4,8 @@ const articleModel = require('../model').articleModel;
 module.exports = {
     // CRUD
     async createArticle(req, res) {
-        var newArticle = req.body.article;
-
         try {
-            let result = await articleModel.createArticle(newArticle, req.user, req.body.category);
+            let result = await articleModel.createArticle(req.body.article, req.user, req.body.category);
 
             res.status(201).send(result);
         } catch (error) {

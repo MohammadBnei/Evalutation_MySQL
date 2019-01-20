@@ -39,4 +39,8 @@ module.exports = {
         if (result.affectedRows === 0) throw new Error('Wrong user id');
     },
     // End of CRUD Operations
+
+    async searchUser(elem) {
+        pool.query(sqlLib.buildFindByElemQuery(elem, 'user'));
+    }
 };

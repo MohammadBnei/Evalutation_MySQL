@@ -9,7 +9,7 @@ module.exports = {
         try {
             var newUser = {...req.body};
 
-            var result = await pool.query(sqlLib.buildFindByElemQuery({email: newUser.email}, 'user'));
+            var result = await userModel.searchUser({email: newUser.email});
 
             if (result.length) throw new Error('Email taken');
 
@@ -19,7 +19,6 @@ module.exports = {
             req.login(newUser, (err) => res.status(201).send(newUser));
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
-            return;
         }
     },
 
