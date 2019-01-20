@@ -1,11 +1,11 @@
 const errorHandler = require('../util/errorHandler');
-const userModel = require('../model').userModel;
+const categoryModel = require('../model').categoryModel;
 
 module.exports = {
     // CRUD
-    async createUser(req, res) {
+    async createCategory(req, res) {
         try {
-            let result = await userModel.createUser(req.body);
+            let result = await categoryModel.createCategory(req.body);
 
             res.status(201).send(result);
         } catch (error) {
@@ -13,9 +13,9 @@ module.exports = {
         }
     },
 
-    async getUserById(req, res) {
+    async getCategoryById(req, res) {
         try {
-            let result = await userModel.getUserById(req.params.id);
+            let result = await categoryModel.getCategoryById(req.params.id);
             
             res.status(200).send(result);
         } catch (error) {
@@ -23,9 +23,9 @@ module.exports = {
         }
     },
 
-    async getUsers(req, res) {
+    async getCategories(req, res) {
         try {
-            let results = await userModel.getUsers();
+            let results = await categoryModel.getCategories();
         
             res.status(200).send(results);
         } catch (error) {
@@ -33,9 +33,9 @@ module.exports = {
         }
     },
 
-    async updateUser(req, res) {
+    async updateCategory(req, res) {
         try {
-            let result = await userModel.updateUser(req.body);
+            let result = await categoryModel.updateCategory(req.body);
 
             res.status(200).send(result);
         } catch (error) {
@@ -43,9 +43,9 @@ module.exports = {
         }
     },
 
-    async deleteUser(req, res) {
+    async deleteCategory(req, res) {
         try {
-            await userModel.deleteUser(req.params.id);
+            await categoryModel.deleteCategory(req.params.id);
             
             res.status(200).send('Ok');
         } catch (error) {

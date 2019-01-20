@@ -16,4 +16,10 @@ module.exports = (router) => {
 
 	// Delete an comment by its id
 	router.delete('/comment/:id', commentController.deleteComment);
+
+	// Get all comments from an user (if parameters empty, will use the session's user)
+	router.get('/comments/user/:id', commentController.getCommentsByUser);
+
+	// Get all comments from an article
+	router.get('/comments/article/:id', commentController.getCommentsByArticle);
 }

@@ -1,69 +1,71 @@
-const pool = require('../config/database');
 const errorHandler = require('../util/errorHandler');
-const sqlLib = require('../util/sqlLib');
+const articleModel = require('../model').articleModel;
 
 module.exports = {
     // CRUD
     async createArticle(req, res) {
-        var article = {...req.body};
+        var newArticle = req.body.article;
 
         try {
-            var query = await pool.query(sqlLib.buildCreateQuery(article, 'article'));
-            console.log({queryResult: query})
-            var result = await pool.query(sqlLib.buildFindByIdQuery({article_id: query.insertId}));
+            let result = await articleModel.createArticle(newArticle, req.user, req.body.category);
+
+            res.status(201).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }
-
-        res.status(201).send({result});
     },
 
     async getArticleById(req, res) {
         try {
-            var result = await pool.query(sqlLib.buildFindByIdQuery({article_id: req.params.id}));
+            let result = await articleModel.getArticleById(req.params.id);
+            
+            res.status(200).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }
-
-        console.log({result});
-        res.status(200).send({result});
     },
 
     async getArticles(req, res) {
         try {
-            var results = await pool.query(sqlLib.getArticlesQuery());
+            let results = await articleModel.getArticles();
+        
+            res.status(200).send(results);
         } catch (error) {
            errorHandler.queryRequestErrorHandler(error, res);
         }
-
-        console.log({results});
-        res.status(200).send({results});
     },
 
     async updateArticle(req, res) {
-        const article = {...req.body};
-
         try {
-            await pool.query(sqlLib.buildUpdateQuery(article));
-            var result = await pool.query(sqlLib.buildFindByIdQuery(article));
+            let result = await articleModel.updateArticle(req.body);
+
+            res.status(200).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }
-
-        console.log({result});
-        res.status(200).send({result});
     },
 
     async deleteArticle(req, res) {
         try {
-            var result = await pool.query(sqlLib.buildDeleteQuery({article_id: req.params.id}));
-            if (result.affectedRows === 0) throw new Error('Wrong article id');
+            await articleModel.deleteArticle(req.params.id);
+            
+            res.status(200).send('Ok');
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }
-
-        res.status(200).send({result});
     },
     // End of CRUD Operations
 
+    // Get all articles from an admin
+    async getArticlesByAdmin(req, res) {
+        const user_id = req.params.id || req.user.user_id;
+
+        try {
+            let results = await articleModel.getArticlesByUser(user_id);
+
+            res.status(200).send(results);
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
+    },
 };

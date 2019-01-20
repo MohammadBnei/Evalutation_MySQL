@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const expressValidator = require('express-validator');
 const app = express();
 // Setting the environnement port to 3000
 const port = process.env.port || 3000;
@@ -31,7 +32,8 @@ app.use(bodyParser.json());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
   extended: true
-}))
+}));
+app.use(expressValidator());
 
 // importing necessary modules for Passport
 const passport = require('passport');

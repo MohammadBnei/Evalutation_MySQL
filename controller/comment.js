@@ -1,74 +1,81 @@
-const pool = require('../config/database');
 const errorHandler = require('../util/errorHandler');
-const sqlLib = require('../util/sqlLib');
+const commentModel = require('../model').commentModel;
 
 module.exports = {
     // CRUD
     async createComment(req, res) {
-        var comment = {...req.body};
-
+        var newComment = {...req.body,
+            user_id: req.user.user_id};
         try {
-            var query = await pool.query(sqlLib.buildCreateQuery(comment, 'comment'));
-            console.log({queryResult: query})
-            var result = await pool.query(sqlLib.buildFindByIdQuery({comment_id: query.insertId}));
+            let result = await commentModel.createComment(newComment);
+
+            res.status(201).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
-            return;
         }
-
-        res.status(201).send({result});
     },
 
     async getCommentById(req, res) {
         try {
-            var result = await pool.query(sqlLib.buildFindByIdQuery({comment_id: req.params.id}));
+            let result = await commentModel.getCommentById(req.params.id);
+            
+            res.status(200).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
-            return;
         }
-
-        console.log({result});
-        res.status(200).send({result});
     },
 
     async getComments(req, res) {
         try {
-            var results = await pool.query(sqlLib.getCommentsQuery());
+            let results = await commentModel.getComments();
+        
+            res.status(200).send(results);
         } catch (error) {
            errorHandler.queryRequestErrorHandler(error, res);
-           return;
         }
-
-        console.log({results});
-        res.status(200).send({results});
     },
 
     async updateComment(req, res) {
-        const comment = {...req.body};
-
         try {
-            await pool.query(sqlLib.buildUpdateQuery(comment));
-            var result = await pool.query(sqlLib.buildFindByIdQuery(comment));
+            let result = await commentModel.updateComment(req.body);
+
+            res.status(200).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
-            return;
         }
-
-        console.log({result});
-        res.status(200).send({result});
     },
 
     async deleteComment(req, res) {
         try {
-            var result = await pool.query(sqlLib.buildDeleteQuery({comment_id: req.params.id}));
-            if (result.affectedRows === 0) throw new Error('Wrong comment id');
+            await commentModel.deleteComment(req.params.id);
+            
+            res.status(200).send('Ok');
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
-            return;
         }
-
-        res.status(200).send({result});
     },
     // End of CRUD Operations
 
+    // Get all comments from a user
+    async getCommentsByUser(req, res) {
+        const user_id = req.params.id || req.user.user_id;
+        try {
+            let results = await commentModel.getCommentsByUser(user_id);
+
+            res.status(200).send(results);
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
+    },
+
+    // Get all comments from an article
+    async getCommentsByArticle(req, res) {
+        try {
+            let results = await commentModel.getCommentsByArticle(req.params.id);
+
+            res.status(200).send({results});
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
+    }
 };

@@ -1,21 +1,22 @@
 const pool = require('../config/database');
 const errorHandler = require('../util/errorHandler');
 const sqlLib = require('../util/sqlLib');
-const userController = require('./user');
+const userModel = require('../model').userModel;
 
 module.exports = {
     // Signup
     async signUp(req, res) {
-        var newUser = {...req.body};
-
         try {
+            var newUser = {...req.body};
+
             var result = await pool.query(sqlLib.buildFindByElemQuery({email: newUser.email}, 'user'));
 
             if (result.length) throw new Error('Email taken');
 
-            newUser = await userController.createUser(req, res, false);
+            newUser = await userModel.createUser(newUser);
+            newUser = newUser[0];
 
-            req.login(newUser, (err) => res.status(201).send(req.user))
+            req.login(newUser, (err) => res.status(201).send(newUser));
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
             return;

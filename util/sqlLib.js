@@ -5,8 +5,13 @@ module.exports = {
     getCategoriesQuery: () => `SELECT * FROM category`,
     getCommentsQuery: () => `SELECT * FROM comment`,
 
-    buildCreateQuery: (obj, table) => {
+    // insert into TABLE (ELEMENTS, createdAt) values (VALUES, now());
+    buildCreateQuery: (obj, table, extraSets = []) => {
         var sets = extractSets(obj);
+
+        if (extraSets.length) extraSets.forEach((set) => sets.push(set));
+
+        console.log({sets, extraSets});
 
         var columns = '';
         sets.forEach((set) => columns += set.column + ',');
@@ -21,6 +26,7 @@ module.exports = {
         return query;
     },
 
+    // select * from TABLE where id = ID;
     buildFindByIdQuery: (obj) => {
         var queryParams = extractObjectInfos(obj);
         var query = `SELECT * FROM ${queryParams.table} WHERE ${queryParams.idSet}`;
@@ -29,6 +35,7 @@ module.exports = {
         return query;
     },
 
+    // update TABLE set ELEMENTS where id = ID;
     buildUpdateQuery: (obj) => {
         var queryParams = extractObjectInfos(obj);
         var sets = extractSets(obj);
@@ -46,6 +53,7 @@ module.exports = {
         return query;
     },
 
+    // delete from TABLE where id = ID;
     buildDeleteQuery(obj) {
         var queryParams = extractObjectInfos(obj);
         var query = `DELETE FROM ${queryParams.table} WHERE ${queryParams.idSet}`;
@@ -55,6 +63,7 @@ module.exports = {
     },
     // End of CRUD operations
 
+    // select * from TABLE where CLAUSE
     buildFindByElemQuery(obj, table) {
         var sets = extractSets(obj);
         var whereClause = '';
@@ -63,6 +72,15 @@ module.exports = {
         whereClause = whereClause.slice(0, -4);
         
         var query = `SELECT * FROM ${table} WHERE ${whereClause}`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildFindElemByModelQuery(elemTable, model) {
+        var modelParams = extractObjectInfos(model);
+        
+        var query = `SELECT * FROM ${elemTable} WHERE ${modelParams.idSet}`;
 
         console.log({query});
         return query;
