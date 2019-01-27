@@ -12,6 +12,8 @@ module.exports = {
 
             if (!article.title || !article.content || !category) throw new Error('Some fields are empty');
 
+            if (!category.length) throw new Error('No category selected');
+
             console.log('Request Body ok for article creation');
             next();   
         } catch (error) {
@@ -20,7 +22,9 @@ module.exports = {
         }
     },
 
-    createOrUpdateUser(req, res, next) {
-        
+    isAuthenticated(req, res, next) {
+        if (req.isAuthenticated()) next();
+
+        res.status(403).send('User is not autheticated');
     }
 };

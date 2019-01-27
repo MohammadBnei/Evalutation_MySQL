@@ -1,7 +1,8 @@
 const commentController = require('../controller/').commentController;
-//var passport = require('passport');
+const validator = require('../util/validator');
 
 module.exports = (router) => {
+	router.use(validator.isAuthenticated);
 	// Create a comment in the database and return it 
 	router.post('/comment', commentController.createComment);
 
@@ -12,7 +13,7 @@ module.exports = (router) => {
 	router.get('/comments', commentController.getComments);
 
 	// Update a comment (will update every parameters present in the JSON object passed)
-	router.put('/comment', commentController.updateComment);
+	router.put('/comment/:id', commentController.updateComment);
 
 	// Delete an comment by its id
 	router.delete('/comment/:id', commentController.deleteComment);

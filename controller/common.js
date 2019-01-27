@@ -1,15 +1,17 @@
-const pool = require('../config/database');
 const errorHandler = require('../util/errorHandler');
-const sqlLib = require('../util/sqlLib');
 const userModel = require('../model').userModel;
+const commonModel = require('../model').commonModel;
 
 module.exports = {
     // Signup
     async signUp(req, res) {
         try {
-            var newUser = {...req.body};
+            var newUser = { ...req.body
+            };
 
-            var result = await userModel.searchUser({email: newUser.email});
+            var result = await userModel.searchUser({
+                email: newUser.email
+            });
 
             if (result.length) throw new Error('Email taken');
 
@@ -35,5 +37,18 @@ module.exports = {
     getSessionUser(req, res) {
         if (!req.user) res.status(403).send('No user connected');
         else res.status(200).send(req.user);
+    },
+
+    async searchArticle(req, res) {
+        var words = req.body.words;
+            categories = req.body.categories;
+
+        try {
+            let results = await commonModel.searchArticle(words, categories);
+
+            res.status(200).send(results);
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
     }
 };

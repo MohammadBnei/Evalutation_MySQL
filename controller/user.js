@@ -35,7 +35,8 @@ module.exports = {
 
     async updateUser(req, res) {
         try {
-            let result = await userModel.updateUser(req.body);
+            let user = {...req.body, user_id: req.params.id};
+            let result = await userModel.updateUser(user);
 
             res.status(200).send(result);
         } catch (error) {

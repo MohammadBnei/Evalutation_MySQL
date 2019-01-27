@@ -5,7 +5,7 @@ module.exports = {
     // CRUD
     async createArticle(req, res) {
         try {
-            let result = await articleModel.createArticle(req.body.article, req.user, req.body.category);
+            let result = await articleModel.createArticle(req.body.article, req.user, req.body.categories);
 
             res.status(201).send(result);
         } catch (error) {
@@ -16,7 +16,7 @@ module.exports = {
     async getArticleById(req, res) {
         try {
             let result = await articleModel.getArticleById(req.params.id);
-            
+
             res.status(200).send(result);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
@@ -26,16 +26,18 @@ module.exports = {
     async getArticles(req, res) {
         try {
             let results = await articleModel.getArticles();
-        
+
             res.status(200).send(results);
         } catch (error) {
-           errorHandler.queryRequestErrorHandler(error, res);
+            errorHandler.queryRequestErrorHandler(error, res);
         }
     },
 
     async updateArticle(req, res) {
         try {
-            let result = await articleModel.updateArticle(req.body);
+            let article = {...req.body.article, article_id: req.params.id};
+            let categories = req.body.categories;
+            let result = await articleModel.updateArticle(article, categories);
 
             res.status(200).send(result);
         } catch (error) {
@@ -46,7 +48,7 @@ module.exports = {
     async deleteArticle(req, res) {
         try {
             await articleModel.deleteArticle(req.params.id);
-            
+
             res.status(200).send('Ok');
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);

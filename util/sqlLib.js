@@ -73,10 +73,26 @@ module.exports = {
         return query;
     },
 
+    // select * from TABLE where MODEL PARAM
     buildFindElemByModelQuery(elemTable, model) {
         var modelParams = extractObjectInfos(model);
         
         var query = `SELECT * FROM ${elemTable} WHERE ${modelParams.idSet}`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildSearchByWordsAndCategories(words, categories = []) {
+        var categoriesId, categoryQuery = '';
+        if (categories.length) {
+            categories.forEach((category) => categoriesId += category.category_id + ', ')
+            categoriesId.slice(0, -2);
+
+            categoryQuery = `SELECT article.* FROM article INNER JOIN article_category ON article_category.category_id IN (${categoriesId}) UNION `;
+        }
+
+        var query = categoryQuery + `SELECT article.* FROM article WHERE MATCH(title, content) AGAINST(${words})`;
 
         console.log({query});
         return query;

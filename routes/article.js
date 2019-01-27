@@ -1,8 +1,8 @@
 const articleController = require('../controller/').articleController;
 const validator = require('../util/validator');
-//var passport = require('passport');
 
 module.exports = (router) => {
+	router.use(validator.isAuthenticated);
 	// Create a article in the database and return it 
 	router.post('/article', validator.createArticle,  articleController.createArticle);
 
@@ -13,7 +13,7 @@ module.exports = (router) => {
 	router.get('/articles', articleController.getArticles);
 
 	// Update a article (will update every parameters present in the JSON object passed)
-	router.put('/article', articleController.updateArticle);
+	router.put('/article/:id', articleController.updateArticle);
 
 	// Delete an article by its id
 	router.delete('/article/:id', articleController.deleteArticle);

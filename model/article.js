@@ -3,13 +3,16 @@ const sqlLib = require('../util/sqlLib');
 
 module.exports = {
     // CRUD
-    async createArticle(article, user, category) {
+    async createArticle(article, user, categories) {
         article = {...article,
             user_id: user.user_id,
-            category_id: category.category_id
             }
 
         var query = await pool.query(sqlLib.buildCreateQuery(article, 'article'));
+        categories.forEach((category) => pool.query(sqlLib.buildCreateQuery({
+            category_id: category.category_id,
+            article_id: article.article_id}, 'article_category')));
+        
         var result = pool.query(sqlLib.buildFindByIdQuery({article_id: query.insertId}));
 
         return result;
@@ -28,12 +31,14 @@ module.exports = {
         return results;
     },
 
-    async updateArticle(article) {
+    async updateArticle(article, categories) {
         await pool.query(sqlLib.buildUpdateQuery(article));
+        categories.forEach((category) => pool.query(sqlLib.buildCreateQuery({
+            category_id: category.category_id,
+            article_id: article.article_id}, 'article_category')));
         var result = pool.query(sqlLib.buildFindByIdQuery(article));
 
         return result;
-        
     },
 
     async deleteArticle(id) {

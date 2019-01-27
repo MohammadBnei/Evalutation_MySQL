@@ -35,7 +35,8 @@ module.exports = {
 
     async updateCategory(req, res) {
         try {
-            let result = await categoryModel.updateCategory(req.body);
+            let category = {...req.body, category_id: req.params.id};
+            let result = await categoryModel.updateCategory(category);
 
             res.status(200).send(result);
         } catch (error) {

@@ -37,7 +37,8 @@ module.exports = {
 
     async updateComment(req, res) {
         try {
-            let result = await commentModel.updateComment(req.body);
+            let comment = {...req.body, comment_id: req.params.id};
+            let result = await commentModel.updateComment(comment);
 
             res.status(200).send(result);
         } catch (error) {
