@@ -1,5 +1,5 @@
 node_modules
 client
-package-lock.json
 test
 userTest.http
+package-lock.json

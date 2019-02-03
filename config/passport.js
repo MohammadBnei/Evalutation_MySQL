@@ -1,7 +1,16 @@
 // importing necessary modules for Passport
 const passport = require('passport');
+const {Strategy, ExtractJwt} = require('passport-jwt');
+const pool = require('./database');
+const sqlLib = require('../util/sqlLib');
 const LocalStrategy = require('passport-local').Strategy;
-const userModel = require('../model').userModel;
+const sha1 = require('crypto-js/sha1');
+const commonModel = require('../model').commonModel;
+
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'jwt-secret'
+};
 
 module.exports = (app) => {
 
@@ -10,16 +19,10 @@ module.exports = (app) => {
     app.use(passport.session());
     
     // Creating the logic for the sign in of users
-    passport.use(new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback : true
-    }, async (req, email, password, done) => {
-        if (!email || !password) {
-            return done(null, false);
-        }
+    passport.use(new Strategy(opts, async (payload, done) => {
+        
         try {
-            var users = await userModel.searchUser({email});
+            var users = await commonModel.searchUser({email});
             if (!users.length) return done(null, false);
 
             let user = users[0];
