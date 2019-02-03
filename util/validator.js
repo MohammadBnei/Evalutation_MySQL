@@ -25,6 +25,6 @@ module.exports = {
     isAuthenticated(req, res, next) {
         if (req.isAuthenticated()) next();
 
-        res.status(403).send('User is not autheticated');
+        res.status(403).send('User is not authenticated');
     }
 };

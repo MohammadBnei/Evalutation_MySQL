@@ -2,7 +2,6 @@ const commentController = require('../controller/').commentController;
 const validator = require('../util/validator');
 
 module.exports = (router) => {
-	router.use(validator.isAuthenticated);
 	// Create a comment in the database and return it 
 	router.post('/comment', commentController.createComment);
 

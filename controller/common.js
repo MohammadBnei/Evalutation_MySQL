@@ -6,10 +6,9 @@ module.exports = {
     // Signup
     async signUp(req, res) {
         try {
-            var newUser = { ...req.body
-            };
+            var newUser = { ...req.body };
 
-            var result = await userModel.searchUser({
+            var result = await commonModel.searchUser({
                 email: newUser.email
             });
 
@@ -35,7 +34,7 @@ module.exports = {
     },
 
     getSessionUser(req, res) {
-        if (!req.user) res.status(403).send('No user connected');
+        if (!req.user) res.status(200).send(null);
         else res.status(200).send(req.user);
     },
 

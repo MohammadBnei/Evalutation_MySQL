@@ -5,7 +5,13 @@ module.exports = {
     // CRUD
     async createUser(req, res) {
         try {
-            let result = await userModel.createUser(req.body);
+            let result = await commonModel.searchUser({
+                email: newUser.email
+            });
+
+            if (result.length) throw new Error('Email taken');
+            
+            result = await userModel.createUser(req.body);
 
             res.status(201).send(result);
         } catch (error) {

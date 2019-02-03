@@ -14,6 +14,9 @@ var io = require('socket.io').listen(server);
 // Making the default folder 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser);
+
 /*
  *  using the JSON body parser
  */
@@ -51,6 +54,15 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
+});
+
+//custom Middleware for logging the each request going to the API
+app.use((req,res,next) => {
+      if (req.body) console.log(req.body);
+      if (req.params) console.log(req.params);
+      if(req.query) console.log(req.query);
+      console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
+    next();
 });
 
 require('./util/sockets')(io);

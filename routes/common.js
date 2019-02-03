@@ -5,11 +5,11 @@ module.exports = (router) => {
     router.get('/session/user', commonController.getSessionUser);
 
 	// Sign up a user
-	router.post('/signup', commonController.signUp);
+	router.post('/session/signup', commonController.signUp);
 
 	// Sign in
-	router.post('/signin', passport.authenticate('local'), commonController.signIn);
+	router.post('/session/signin', passport.authenticate('local'), commonController.signIn);
 
     // Sign Out
-    router.post('/signout', commonController.signOut)
+    router.post('/session/signout', commonController.signOut)
 };

@@ -2,7 +2,6 @@ const categoryController = require('../controller/').categoryController;
 const validator = require('../util/validator');
 
 module.exports = (router) => {
-	router.use(validator.isAuthenticated);
 	// Create a category in the database and return it 
 	router.post('/category', categoryController.createCategory);
 

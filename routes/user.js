@@ -2,7 +2,6 @@ const userController = require('../controller/').userController;
 const validator = require('../util/validator');
 
 module.exports = (router) => {
-	router.use(validator.isAuthenticated);
 	// Create a user in the database and return it 
 	router.post('/user', userController.createUser);
 

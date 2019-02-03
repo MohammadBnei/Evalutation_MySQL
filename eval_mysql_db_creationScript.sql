@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `eval_mysql_db`.`user` (
   `surname` VARCHAR(255) NULL,
   `img` VARCHAR(255) NULL,
   `password` VARCHAR(40) NOT NULL,
-  `isAdmin` TINYINT NULL,
+  `isAdmin` TINYINT NULL DEFAULT 0,
   `createdAt` DATETIME NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)

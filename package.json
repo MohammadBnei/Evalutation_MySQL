@@ -28,6 +28,7 @@
   "dependencies": {
     "@joefallon/mysql-date": "*",
     "body-parser": "*",
+    "cookie-parser": "^1.4.3",
     "crypto-js": "*",
     "eslint": "*",
     "eslint-plugin-node": "*",
@@ -40,6 +41,7 @@
     "nodemon": "*",
     "npm": "*",
     "passport": "*",
+    "passport-jwt": "^4.0.0",
     "passport-local": "*",
     "session-memory-store": "*",
     "socket.io": "*"

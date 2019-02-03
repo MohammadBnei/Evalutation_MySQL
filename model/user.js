@@ -1,10 +1,17 @@
 const pool = require('../config/database');
 const sha1 = require('crypto-js/sha1');
 const sqlLib = require('../util/sqlLib');
+const commonModel = require('./common');
 
 module.exports = {
     // CRUD
     async createUser(user) {
+        var result = await commonModel.searchUser({
+                email: user.email
+            });
+
+        if (result.length) return new Error('Email taken');
+        user.password = sha1(user.password);
         var query = await pool.query(sqlLib.buildCreateQuery(user, 'user'));
         var result = pool.query(sqlLib.buildFindByIdQuery({user_id: query.insertId}));
 
