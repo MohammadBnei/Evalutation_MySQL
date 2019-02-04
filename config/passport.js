@@ -1,33 +1,29 @@
 // importing necessary modules for Passport
 const passport = require('passport');
 const {Strategy, ExtractJwt} = require('passport-jwt');
-const pool = require('./database');
-const sqlLib = require('../util/sqlLib');
-const LocalStrategy = require('passport-local').Strategy;
-const sha1 = require('crypto-js/sha1');
-const commonModel = require('../model').commonModel;
+const userModel = require('../model').userModel;
 
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'jwt-secret'
-};
+
 
 module.exports = (app) => {
-
+    
     // Initialize Passport session
     app.use(passport.initialize());
     app.use(passport.session());
-    
+
+    const opts = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: 'secret'
+    };
+
     // Creating the logic for the sign in of users
     passport.use(new Strategy(opts, async (payload, done) => {
-        
+        console.log('Passport JWT Strategy');
         try {
-            var users = await commonModel.searchUser({email});
-            if (!users.length) return done(null, false);
+            var user = await userModel.getUserById(payload.user_id);
+            console.log(user);
 
-            let user = users[0];
-
-            if (user.password != sha1(password)) return done(null, false)
+            if (!user) return done(null, false);
 
             return done(null, user);
         } catch (error) {

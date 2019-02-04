@@ -8,7 +8,7 @@ module.exports = (router) => {
 	router.post('/session/signup', commonController.signUp);
 
 	// Sign in
-	router.post('/session/signin', passport.authenticate('local'), commonController.signIn);
+	router.post('/session/signin', commonController.signIn);
 
     // Sign Out
     router.post('/session/signout', commonController.signOut)

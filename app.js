@@ -1,21 +1,16 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // Setting the environnement port to 3000
 const port = process.env.port || 3000;
 
-// Starting the server on the previously set port
-const server = app.listen(port, () => console.log(`listening on port ${port}!`));
-
-// Making the bidirectional socket listen to the server
-var io = require('socket.io').listen(server);
-
 // Making the default folder 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 const cookieParser = require('cookie-parser');
-app.use(cookieParser);
+app.use(cookieParser());
 
 /*
  *  using the JSON body parser
@@ -40,35 +35,38 @@ app.use(session({
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
-  /* cookie: {
-    secure: process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test',
-    maxAge: 2419200000
-  }, */
   secret: 'secret',
 }));
 
 require('./config/passport')(app);
 
 // make this server CORS-ENABLE
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 
 //custom Middleware for logging the each request going to the API
 app.use((req,res,next) => {
-      if (req.body) console.log(req.body);
-      if (req.params) console.log(req.params);
-      if(req.query) console.log(req.query);
+      if (req.body != {}) console.log({body : req.body});
+      if (req.params != {}) console.log({params: req.params});
+      if (req.cookies != {}) console.log({cookies: req.cookies});
       console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
     next();
 });
 
-require('./util/sockets')(io);
+
 
 // Handling Promise errors
 process.on('unhandledRejection', error => console.error('Uncaught Error', error));
+
+
+app.use((req,res, next) => {
+  req.setTimeout(5000, () => {  
+    console.log('timed out');
+    req.abort();
+  });
+  next();
+})
+
+
 
 /*
  *  Setting the route 
@@ -77,3 +75,9 @@ const routes = require('./routes/');
 const router = express.Router();
 routes(router);
 app.use(router);
+
+// Starting the server on the previously set port
+const server = app.listen(port, () => console.log(`listening on port ${port}!`));
+
+// Making the bidirectional socket listen to the server
+const io = require('socket.io').listen(server);

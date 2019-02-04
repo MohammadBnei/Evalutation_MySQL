@@ -18,7 +18,10 @@ module.exports = {
         return result;
         
     },
-
+    /*
+     * Get a user by the id 
+     * @params : id
+     */
     async getUserById(id) {
         var result = pool.query(sqlLib.buildFindByIdQuery({user_id: id}));
 
