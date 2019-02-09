@@ -45,10 +45,10 @@ app.use(cors());
 
 //custom Middleware for logging the each request going to the API
 app.use((req,res,next) => {
-      if (req.body != {}) console.log({body : req.body});
-      if (req.params != {}) console.log({params: req.params});
-      if (req.cookies != {}) console.log({cookies: req.cookies});
-      console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
+    console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
+    if (req) console.log({body: req.body}, {params: req.params}, {user: req.user}
+      )
+
     next();
 });
 

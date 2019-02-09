@@ -21,7 +21,6 @@ module.exports = (app) => {
         console.log('Passport JWT Strategy');
         try {
             var user = await userModel.getUserById(payload.user_id);
-            console.log(user);
 
             if (!user) return done(null, false);
 
@@ -36,7 +35,7 @@ module.exports = (app) => {
 
     passport.deserializeUser(async (user_id, done) => {
         try {
-            var result = await pool.query(sqlLib.buildFindByIdQuery({user_id}));
+            var result = await userModel.getUserById(user_id);
             return done(null, result[0]);
         } catch (error) {
             console.log(error);

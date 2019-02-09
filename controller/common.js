@@ -19,7 +19,7 @@ module.exports = {
             newUser = await userModel.createUser(newUser);
             newUser = newUser[0];
 
-            res.redirect('/login');
+            res.redirect(307, '/session/signin');
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }
@@ -36,15 +36,17 @@ module.exports = {
 
             if (user.password != sha1(password)) throw new Error ('Wrong password');
 
-            const payload = {user_id: user.user_id};
-            let token = jwt.sign(payload, 'secret');
-            res.status(200).send({message: 'Ok', token});
+            req.login(user, (err) => {
+                if (err) throw new Error (err);
+                const payload = {user_id: user.user_id};
+                let token = jwt.sign(payload, 'secret');
+                res.status(200).send({message: 'Ok', token});
+                console.log('Logged In with email : ', user.email, token)
+            })
 
         } catch (error) {
-            console.error(error);
-            return done(error);
+            errorHandler.loginErrorHandler(error, res);
         }
-        res.status(200).send(req.user);
     },
 
     signOut(req, res) {
@@ -54,7 +56,7 @@ module.exports = {
     },
 
     getSessionUser(req, res) {
-        if (!req.user) res.status(200).send(null);
+        if (!req.user) res.status(401).send('No user connected');
         else res.status(200).send(req.user);
     },
 
