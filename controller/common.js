@@ -40,7 +40,7 @@ module.exports = {
                 if (err) throw new Error (err);
                 const payload = {user_id: user.user_id};
                 let token = jwt.sign(payload, 'secret');
-                res.status(200).send({message: 'Ok', token});
+                res.status(200).send({message: 'Ok', token, user});
                 console.log('Logged In with email : ', user.email, token)
             })
 

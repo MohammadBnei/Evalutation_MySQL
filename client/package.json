@@ -1,0 +1,48 @@
+{
+  "name": "backbone-webpack",
+  "version": "1.0.0",
+  "description": "Backbone.js and Webpack 4 starter package",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open ",
+    "dist": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "*",
+    "backbone-validation": "^0.11.5",
+    "backbone.marionette": "^4.0.0",
+    "bootstrap": "^4.2.1",
+    "cloudinary": "^1.13.2",
+    "eslint-plugin-backbone": "^2.1.1",
+    "handlebars": "^4.0.12",
+    "handlebars-loader": "^1.7.1",
+    "jquery": "*",
+    "jquery-serializejson": "^2.9.0",
+    "js-cookie": "^2.2.0",
+    "moment": "^2.24.0",
+    "popper": "^1.0.1",
+    "popper.js": "^1.14.6",
+    "underscore": "^1.9.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-loader": "*",
+    "babel-preset-env": "*",
+    "css-loader": "*",
+    "eslint": "*",
+    "eslint-loader": "*",
+    "html-webpack-plugin": "*",
+    "mini-css-extract-plugin": "*",
+    "node-sass": "*",
+    "sass-loader": "*",
+    "style-loader": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "^3.1.14"
+  }
+}

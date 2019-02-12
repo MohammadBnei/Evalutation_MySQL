@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="card">
+        <form id="creation-form">
+            <div class="card-body">
+                <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" name="title" value={{title}}>
+                <input class="form-control" type="text" placeholder="Default input" name="content" value={{content}}>
+            </div>
+            <div class="row card-footer text-muted">
+                <div class="col align-self-start" >
+                    <button type="button" id="save-button" class="btn btn-success">Modify</button>
+                    <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
+                </div>
+                <div class="col align-self-center text-right align-middle h-100 d-inline-block">
+                    {{articlePostTime}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
