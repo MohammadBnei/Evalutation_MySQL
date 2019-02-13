@@ -1,15 +1,24 @@
 <div class="container-fluid article-region">
     <div class="card">
-        <form id="creation-form">
+        <form>
             <div class="card-body">
-                <h5 class="card-title">
-                    <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" name="title" value="{{title}}">
-                </h5>
-                <input class="form-control" type="text" placeholder="Default input" name="content" value="{{content}}">
+                <div class="form-group row">
+                    <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                        <input class="form-control form-control-lg" id="inputTitle" type="text" placeholder="Title" name="title" value="{{title}}">
+                    </div>                    
+                </div>
+
+                <div class="form-group row">          
+                    <label for="inputContent" class="col-sm-2 col-form-label">Content</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="inputContent" type="text" placeholder="Content" name="content" value="{{content}}">
+                    </div>
+                </div>
             </div>
-            <div class="row card-footer text-muted">
+            <div class="card-footer">
                 <div class="col align-self-start" >
-                    <button type="button" id="save-button" class="btn btn-success">Modify</button>
+                    <button type="submit" id="save-button" class="btn btn-success">Save</button>
                     <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
                 </div>
                 <div class="col align-self-center text-right align-middle h-100 d-inline-block">

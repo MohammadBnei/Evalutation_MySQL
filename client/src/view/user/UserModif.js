@@ -30,11 +30,11 @@ var UserModifView = View.extend({
   },
 
   saveUser (e) {
-    e.stopPropagation();
+    e.preventDefault();
 
     var values = {};
 
-    this.$('#creation-form').serializeArray().forEach(element => {
+    this.$('#modif-form').serializeArray().forEach(element => {
       values[element.name] = element.value;
     });
 

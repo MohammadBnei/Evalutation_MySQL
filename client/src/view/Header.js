@@ -6,6 +6,8 @@ var HeaderView = View.extend({
   events: {
     'click #home-link': 'goToArticlesView',
     'click #all-user-link': 'onShowAllUsers',
+    'click #add-user-link': 'onAddUser',
+    'click #add-article-link': 'onAddArticle',
     'click #logout-button': 'onLogout'
   },
 
@@ -36,6 +38,14 @@ var HeaderView = View.extend({
 
   onShowAllUsers () {
     this.mainChannel.request('show:users:view');
+  },
+
+  onAddUser () {
+    this.mainChannel.request('show:user:creation:view');
+  },
+
+  onAddArticle () {
+    this.mainChannel.request('show:article:creation:view');
   }
 });
 

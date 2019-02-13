@@ -1,10 +1,12 @@
 const errorHandler = require('../util/errorHandler');
 const userModel = require('../model').userModel;
+const commonModel = require('../model').commonModel;
 
 module.exports = {
     // CRUD
     async createUser(req, res) {
         try {
+            let newUser = req.body;
             let result = await commonModel.searchUser({
                 email: newUser.email
             });

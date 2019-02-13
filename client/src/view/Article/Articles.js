@@ -10,6 +10,7 @@ var ArticlesView = CollectionView.extend({
   childView: ArticleView,
 
   sessionChannel: Radio.channel('session-channel'),
+  articleChannel: Radio.channel('article-channel'),
 
   initialize () {
     console.log('Post view created');

@@ -1,28 +1,28 @@
 import {View} from 'backbone.marionette';
-import moment from 'moment';
 import Radio from 'backbone.radio';
-var articleModifTemplate = require('./template/articleModif.hbs');
+//import userModif from './UsereModif';
+var articleCreateTemplate = require('./template/articleModif.hbs');
 
-var ArticleModifView = View.extend({
+var ArticleView = View.extend({
   events: {
-    submit: 'saveArticle'
+    submit: 'saveArticle',
+    'click #cancel-button': 'cancel'
   },
 
-  className: '.modif-article',
+  template: articleCreateTemplate,
 
-  template: articleModifTemplate,
+  regions: {
+    main: '.article-region'
+  },
 
   sessionChannel: Radio.channel('session-channel'),
   mainChannel: Radio.channel('main-channel'),
 
-  templateContext () {
-    return {
-      articlePostTime: moment(this.model.attributes.createdAt).fromNow()
-    };
-  },
+  cancel (e) {
+    e.preventDefault();
+    this.model.destroy();
 
-  initialize () {
-    _.bindAll(this, 'saveArticle');
+    this.mainChannel.request('show:articles:view');
   },
 
   saveArticle (e) {
@@ -41,4 +41,4 @@ var ArticleModifView = View.extend({
   }
 });
 
-export default ArticleModifView;
+export default ArticleView;

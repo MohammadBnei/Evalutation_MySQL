@@ -8,6 +8,7 @@ module.exports = {
     // insert into TABLE (ELEMENTS, createdAt) values (VALUES, now());
     buildCreateQuery: (obj, table) => {
         var sets = extractSets(obj, false);
+        
 
         var columns = '';
         sets.forEach((set) => columns += set.column + ',');
@@ -112,7 +113,7 @@ var extractObjectInfos = (obj) => {
         // x_id
         idSet: ''
     }
-    console.log({obj})
+
     queryParams.idSet = Object.keys(obj).filter((key) => key.match(OBJ_ID_REGEX))[0];
     queryParams.id = obj[queryParams.idSet];
     queryParams.table = queryParams.idSet.slice(0, -3);
@@ -132,7 +133,7 @@ var extractSets = (obj, removeIdFields) => {
     if (removeIdFields) keys = keys.filter((key) => !key.match(OBJ_ID_REGEX));
 
     keys.forEach((key) => {
-        if (obj[key] != null && obj[key] != undefined) {
+        if (obj[key] || typeof(obj[key]) === 'boolean') {
             if (typeof(obj[key]) === 'boolean') obj[key] = obj[key] ? 1 : 0;
 
             set.push({
@@ -140,7 +141,6 @@ var extractSets = (obj, removeIdFields) => {
                 value: obj[key]
             });
         }
-        console.log({obj})
     }, set)
 
     return set;

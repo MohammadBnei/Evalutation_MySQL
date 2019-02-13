@@ -1,20 +1,22 @@
 <div class="container-fluid user-region">
-    <div class="card">
+    <div class="card {{#unless isAdmin}} border-primary{{else}}border-dark{{/unless}}">
         <div class="card-body">
             <h5 class="card-title">E-mail : {{email}}
             </h5>
             <p class="card-text">Name : {{name}}</p>
             <p class="card-text">Surname : {{surname}}</p>
         </div>
-        <div class="row card-footer text-muted">
-            <div class="col align-self-start" >
-                {{#unless isAdmin}}
-                <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
-                <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
-                {{/unless}}
-            </div>
-            <div class="col align-self-center text-right align-middle h-100 d-inline-block">
-                Created : {{userCreatedTime}}
+        <div class="card-footer">
+            <div class="row">
+                <div class="col align-self-start" >
+                    {{#unless isAdmin}}
+                    <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
+                    <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
+                    {{/unless}}
+                </div>
+                <div class="col align-self-center text-right align-middle h-100 d-inline-block">
+                    Created : {{userCreatedTime}}
+                </div>
             </div>
         </div>
     </div>

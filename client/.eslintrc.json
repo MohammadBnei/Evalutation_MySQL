@@ -197,7 +197,7 @@
 
     "brace-style": [2, "1tbs"],
 
-    "camelcase": 1,
+    "camelcase": 0,
 
     "strict": [0, "never"],
     "no-global-strict": 0,

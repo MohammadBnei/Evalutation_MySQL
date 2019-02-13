@@ -1,14 +1,19 @@
 import Backbone from 'backbone';
+import Radio from 'backbone.radio';
 
 var User = Backbone.Model.extend({
   defaults: {
-    user_id: 0,
+    user_id: null,
     name: '',
     surname: '',
     email: '',
-    img: '',
-    createdAt: ''
+    img: ''
   },
+
+  initialize () {
+    this.on('sync', this.onSync, this);
+  },
+
   urlRoot: 'http://localhost:3000/user',
   idAttribute: 'user_id',
   validation: {
@@ -25,6 +30,10 @@ var User = Backbone.Model.extend({
       pattern: /^[a-z ,.'-]+$/i,
       msg: 'Please enter a valid surname'
     }
+  },
+
+  onSync () {
+    Radio.channel('main-channel').request('show:users:view');
   }
 });
 

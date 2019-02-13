@@ -4,7 +4,7 @@ const passport = require('passport');
 
 module.exports = (router) => {
 	// Create a article in the database and return it 
-	router.post('/article', validator.createArticle,  articleController.createArticle);
+	router.post('/article', passport.authenticate('jwt', {session: false}),  articleController.createArticle);
 
 	// Seach for a article by its id
 	router.get('/article/:id', articleController.getArticleById);

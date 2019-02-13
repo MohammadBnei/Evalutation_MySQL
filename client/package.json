@@ -15,7 +15,7 @@
     "backbone-validation": "*",
     "backbone.marionette": "*",
     "bootstrap": "*",
-    "cloudinary": "*",
+    "cloudinary": "^1.13.2",
     "eslint-plugin-backbone": "*",
     "handlebars": "*",
     "handlebars-loader": "*",
