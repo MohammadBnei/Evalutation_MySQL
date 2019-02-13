@@ -33,7 +33,7 @@ module.exports = {
 
     async updateArticle(article, categories) {
         await pool.query(sqlLib.buildUpdateQuery(article));
-        categories.forEach((category) => pool.query(sqlLib.buildCreateQuery({
+        if (categories) categories.forEach((category) => pool.query(sqlLib.buildCreateQuery({
             category_id: category.category_id,
             article_id: article.article_id}, 'article_category')));
         var result = pool.query(sqlLib.buildFindByIdQuery(article));

@@ -6,7 +6,7 @@ var Articles = Backbone.Collection.extend({
   url: 'http://localhost:3000/articles',
   model: Article,
 
-  globalChannel: Radio.channel('global-channel'),
+  mainChannel: Radio.channel('main-channel'),
 
   events: {
     'change add': 'onAdd'
@@ -14,7 +14,7 @@ var Articles = Backbone.Collection.extend({
 
   onAdd () {
     console.log('Article added !');
-    this.globalChannel.trigger('show:articles:view');
+    this.mainChannel.trigger('show:articles:view');
   }
 });
 

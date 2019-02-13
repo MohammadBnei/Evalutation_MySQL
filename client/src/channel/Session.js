@@ -6,13 +6,13 @@ import Radio from 'backbone.radio';
 var SessionChannel = MnObject.extend({
   defaults: {
     loggedIn: false,
-    user: new User(),
-    isAdmin: null,
+    user: null,
     cookie: null,
     token: null
   },
 
   channelName: 'session-channel',
+  mainChannel: Radio.channel('main-channel'),
 
   radioEvents: {
     'connect:session': (msg) => console.log(`${msg} connected to session`)
@@ -21,18 +21,20 @@ var SessionChannel = MnObject.extend({
   radioRequests: {
     'get:token': 'onGetToken',
     'get:user': 'onGetUser',
-    login: 'login',
-    logout: 'logout'
+    'is:loggedIn': 'onIsLoggedIn',
+    'is:admin': 'onIsAdmin',
+    login: 'onLogin',
+    logout: 'onLogout'
   },
 
   initialize () {
-    _.bindAll(this, 'serverLogin');
+    _.bindAll(this, 'serverLogin', 'serverLogout');
     console.log('Session created!');
   },
 
   url: 'http://localhost:3000/session/',
 
-  login (user) {
+  onLogin (user) {
     if (! user.email || ! user.password) return;
 
     Backbone.ajax({
@@ -64,17 +66,15 @@ var SessionChannel = MnObject.extend({
     });
   },
 
-  logout () {
+  onLogout () {
     Backbone.ajax({
       url: this.url + 'signout',
       contentType: 'application/json',
-      headers: {
-        Xtest: 'bar'
-      },
       xhrFields: {
-        withCredentials: true
+        withCredentials: false
       },
       type: 'POST',
+      success: this.serverLogout,
       error: (error, text) => console.error(text, {error})
     });
   },
@@ -82,10 +82,19 @@ var SessionChannel = MnObject.extend({
   serverLogin (res) {
     if (! res) return;
 
-    this.user = res.user;
+    this.user = new User(res.user);
     this.token = res.token;
 
-    Radio.channel('global-channel').trigger('show:articles:view');
+    this.mainChannel.request('show:articles:view');
+    this.getChannel().trigger('loggedIn');
+  },
+
+  serverLogout () {
+    this.user = null;
+    this.token = null;
+
+    this.mainChannel.request('show:login:view');
+    this.getChannel().trigger('loggedOut');
   },
 
   onGetToken () {
@@ -93,7 +102,16 @@ var SessionChannel = MnObject.extend({
   },
 
   onGetUser () {
-    return this.user;
+    return this.user.attributes;
+  },
+
+  onIsLoggedIn () {
+    if (this.token) return true;
+    return false;
+  },
+
+  onIsAdmin () {
+    return this.user.attributes.isAdmin;
   }
 });
 

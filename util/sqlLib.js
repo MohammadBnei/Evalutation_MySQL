@@ -33,6 +33,7 @@ module.exports = {
 
     // update TABLE set ELEMENTS where id = ID;
     buildUpdateQuery: (obj) => {
+        obj.createdAt = null;
         var queryParams = extractObjectInfos(obj);
         var sets = extractSets(obj, true);
 
@@ -41,8 +42,7 @@ module.exports = {
         // Fill the query SET clause
         sets.forEach((set) => querySet += set.column + ' = "' + set.value + '",');
 
-        // Removing the last ','
-        querySet = querySet.slice(0,-1);
+        querySet += ' createdAt = NOW()'
 
         var query = `UPDATE ${queryParams.table} SET ${querySet} WHERE ${queryParams.idSet}`
         console.log({query, queryParams});
@@ -127,16 +127,20 @@ var extractObjectInfos = (obj) => {
 var extractSets = (obj, removeIdFields) => {
     var set = [];
 
-    if (removeIdFields) obj = Object.keys(obj).filter((key) => !key.match(OBJ_ID_REGEX));
+    var keys = Object.keys(obj);
 
-    Object.keys(obj).forEach((key) => {
-        if (obj[key] != undefined) {
+    if (removeIdFields) keys = keys.filter((key) => !key.match(OBJ_ID_REGEX));
+
+    keys.forEach((key) => {
+        if (obj[key] != null && obj[key] != undefined) {
             if (typeof(obj[key]) === 'boolean') obj[key] = obj[key] ? 1 : 0;
+
             set.push({
                 column: key,
                 value: obj[key]
             });
         }
+        console.log({obj})
     }, set)
 
     return set;

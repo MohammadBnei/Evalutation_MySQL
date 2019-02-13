@@ -1,18 +1,23 @@
 import {View} from 'backbone.marionette';
 import moment from 'moment';
 import Radio from 'backbone.radio';
-var articleModifTemplate = require('../template/articleModif.hbs');
+var articleModifTemplate = require('./template/articleModif.hbs');
 
 var ArticleModifView = View.extend({
   events: {
-    'click #validate-button': 'saveArticle',
-    'click #cancel-button': 'cancel'
+    'click #save-button': 'saveArticle'
   },
+
+  regions: {
+    main: '.article-region'
+  },
+
+  className: '.modif-article',
 
   template: articleModifTemplate,
 
   sessionChannel: Radio.channel('session-channel'),
-  globalChannel: Radio.channel('global-channel'),
+  mainChannel: Radio.channel('main-channel'),
 
   templateContext () {
     return {
@@ -33,13 +38,7 @@ var ArticleModifView = View.extend({
       values[element.name] = element.value;
     });
 
-    this.collection.add([values]);
-  },
-
-  goToModifyView (e) {
-    e.preventDefault();
-
-    this.globalChannel.trigger('show:articleModif:view');
+    this.model.save(values);
   }
 });
 

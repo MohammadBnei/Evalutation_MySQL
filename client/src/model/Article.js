@@ -4,7 +4,6 @@ var Article = Backbone.Model.extend({
   defaults: {
     article_id: 0,
     user_id: 0,
-    clientId: null,
     title: '',
     content: '',
     img: '',

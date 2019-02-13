@@ -1,67 +1,17 @@
 import Backbone from 'backbone';
 import Radio from 'backbone.radio';
-import {Application} from 'backbone.marionette';
-import Articles from './collection/Articles';
-import LoginView from './view/Login';
-import RegisterView from './view/Register';
-import ArticlesView from './view/Articles';
-import ArticleModifView from './view/ArticleModif';
 import SessionChannel from './channel/Session';
+import MainApp from './application/Main';
+import HeaderApp from './application/Header';
 
-var Collection = {
-  Articles: new Articles()
-};
+// eslint-disable-next-line no-new
+new SessionChannel();
 
-var View = {
-  Login: new LoginView(),
-  Register: new RegisterView(),
-  Articles: () => {
-    Collection.Articles.fetch();
-    return new ArticlesView({collection: Collection.Articles});
-  },
-  ArticleModif: new ArticleModifView()
-};
+const mainApp = new MainApp();
+const headerApp = new HeaderApp();
 
-const MyApp = Application.extend({
-  region: '#root-element',
-
-  channelName: 'global-channel',
-
-  sessionChannel: new SessionChannel(),
-
-  radioEvents: {
-    'show:register:view': 'onShowRegisterView',
-    'show:login:view': 'onShowLoginView',
-    'show:articles:view': 'onShowArticlesView',
-    'show:articleModif:view': 'onShowArticleModifView'
-  },
-
-  onStart () {
-    this.showView(View.Login);
-    Backbone.history.start({
-      pushState: true
-    });
-  },
-
-  onShowRegisterView () {
-    this.showView(View.Register);
-  },
-
-  onShowLoginView () {
-    this.showView(View.Login);
-  },
-
-  onShowArticlesView () {
-    console.log(View.Articles, Collection.Articles);
-    this.showView(View.Articles);
-  },
-
-  onShowArticleModifView () {
-    this.showView(View.ArticleModif);
-  }
-});
-
-const myApp = new MyApp();
+mainApp.start();
+headerApp.start();
 
 // Overwriting backbone sync method
 var sync = Backbone.sync;
@@ -83,5 +33,3 @@ Backbone.sync = (method, model, options) => {
 
   return sync.call(this, method, model, options);
 };
-
-myApp.start();

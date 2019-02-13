@@ -1,5 +1,4 @@
 import {MnObject} from 'backbone.marionette';
-import Category from '../model/Category';
 
 var CategoryChannel = MnObject.extend({
   default: {

@@ -1,16 +1,16 @@
 import {View} from 'backbone.marionette';
 import Radio from 'backbone.radio';
 
-var loginTemplate = require('../template/login.hbs');
+var loginTemplate = require('./template/login.hbs');
 
 var LoginView = View.extend({
   events: {
     'click #register-button': 'register',
-    submit: 'login'
+    'click #signin-button': 'login'
   },
 
   sessionChannel: Radio.channel('session-channel'),
-  globalChannel: Radio.channel('global-channel'),
+  mainChannel: Radio.channel('main-channel'),
 
   template: loginTemplate,
 
@@ -26,7 +26,7 @@ var LoginView = View.extend({
 
   register (e) {
     e.preventDefault();
-    this.viewManagerChannel.trigger('show:register:view');
+    this.mainChannel.request('show:register:view');
   }
 });
 

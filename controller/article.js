@@ -35,7 +35,7 @@ module.exports = {
 
     async updateArticle(req, res) {
         try {
-            let article = {...req.body.article, article_id: req.params.id};
+            let article = req.body;
             let categories = req.body.categories;
             let result = await articleModel.updateArticle(article, categories);
 

@@ -4,7 +4,7 @@ import ArticleView from './Article';
 
 var ArticlesView = CollectionView.extend({
   collectionEvents: {
-    sync: () => console.log('RENDER')
+    sync: 'render'
   },
 
   childView: ArticleView,

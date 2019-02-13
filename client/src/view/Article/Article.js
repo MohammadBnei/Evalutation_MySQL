@@ -1,18 +1,24 @@
 import {View} from 'backbone.marionette';
 import moment from 'moment';
 import Radio from 'backbone.radio';
-var articleTemplate = require('../template/article.hbs');
+import ArticleModif from './ArticleModif';
+var articleTemplate = require('./template/article.hbs');
 
 var ArticleView = View.extend({
   events: {
     'click #modify-button': 'goToModifyView',
-    'click #remove-button': 'removeArticle'
+    'click #remove-button': 'removeArticle',
+    'click #cancel-button': 'render'
+  },
+
+  regions: {
+    main: '.article-region'
   },
 
   template: articleTemplate,
 
   sessionChannel: Radio.channel('session-channel'),
-  globalChannel: Radio.channel('global-channel'),
+  mainChannel: Radio.channel('main-channel'),
 
   templateContext () {
     return {
@@ -23,19 +29,15 @@ var ArticleView = View.extend({
 
   initialize () {
     _.bindAll(this, 'removeArticle');
-    console.log('Article view', JSON.stringify(this.model));
   },
 
   removeArticle (e) {
     e.stopPropagation();
-    console.log({model: this.model});
     this.model.destroy();
   },
 
-  goToModifyView (e) {
-    e.preventDefault();
-
-    this.globalChannel.trigger('show:articleModif:view');
+  goToModifyView () {
+    this.showChildView('main', new ArticleModif({model: this.model}));
   }
 });
 
