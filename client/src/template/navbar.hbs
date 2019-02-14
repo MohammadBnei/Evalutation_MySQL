@@ -32,10 +32,14 @@
         <button class="btn btn-danger" id="logout-button">Logout</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="collapse" data-target="#search-menu" aria-expanded="false" aria-controls="search-menu">Search menu</button>
+    <div class="col-4">
+      <div class="collapse" id="search-menu">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+      </div>
+    </div>
   </div>
 </nav>
 {{/if}}

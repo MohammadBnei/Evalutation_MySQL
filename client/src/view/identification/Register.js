@@ -1,5 +1,6 @@
 import {View} from 'backbone.marionette';
 import Radio from 'backbone.radio';
+import User from '../../model/User';
 var registerTemplate = require('./template/register.hbs');
 
 var RegisterView = View.extend({
@@ -8,10 +9,8 @@ var RegisterView = View.extend({
     'click #login-button': 'login'
   },
 
-  initialize () {
-    console.log('register view created');
-    this.viewManagerChannel = Radio.channel('main-channel');
-  },
+  sessionChannel: Radio.channel('session-channel'),
+  mainChannel: Radio.channel('main-channel'),
 
   template: registerTemplate,
 
@@ -23,7 +22,14 @@ var RegisterView = View.extend({
       values[element.name] = element.value;
     });
 
-    console.log(values);
+    var newUser = new User(values);
+
+    newUser.save(null, {
+      success: () => this.sessionChannel.request('login', {
+        email: values.email,
+        password: values.password
+      })
+    });
   },
 
   login (e) {

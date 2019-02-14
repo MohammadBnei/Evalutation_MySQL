@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import CommentModel from '../model/Comment';
+import moment from 'moment';
 
 var Comments = Backbone.Collection.extend({
   url: 'http://localhost:3000/comments/',
@@ -7,6 +8,8 @@ var Comments = Backbone.Collection.extend({
   initialize () {
     _.bindAll(this, 'fetchCommentsByUser', 'fetchCommentsByArticle');
   },
+
+  comparator: (a, b) => moment(a.attributes.createdAt).isAfter(moment(b.attributes.createdAt)) ? - 1 : 1,
 
   fetchCommentsByUser (id) {
     this.fetch({

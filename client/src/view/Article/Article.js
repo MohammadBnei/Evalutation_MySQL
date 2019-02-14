@@ -2,13 +2,11 @@ import {View} from 'backbone.marionette';
 import moment from 'moment';
 import Radio from 'backbone.radio';
 import ArticleDetail from './ArticleDetail';
-import CommentModel from '../../model/Comment';
 var articleTemplate = require('./template/article.hbs');
 
 var ArticleView = View.extend({
   events: {
-    'click #showDetail': 'goToDetailView',
-    'click #save-comment': 'saveComment'
+    'click #showDetail': 'goToDetailView'
   },
 
   childViewEvents: {
@@ -23,7 +21,7 @@ var ArticleView = View.extend({
 
   templateContext () {
     return {
-      articlePostTime: moment(this.model.attributes.createdAt).fromNow()
+      articlePostTime: moment(this.model.attributes.createdAt).format('ll')
     };
   },
 
@@ -38,19 +36,6 @@ var ArticleView = View.extend({
   goToDetailView () {
     this.articleChannel.trigger('click:showDetail');
     this.showChildView('main', new ArticleDetail({model: this.model}));
-  },
-
-  saveComment (e) {
-    e.preventDefault();
-
-    var newComment = new CommentModel({
-      content: this.$('#comment-input').val(),
-      user_id: this.sessionChannel.request('get:user').user_id,
-      article_id: this.model.attributes.article_id
-    });
-
-    newComment.save();
-    this.model.collection.add(newComment);
   }
 });
 

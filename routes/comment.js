@@ -1,7 +1,10 @@
 const commentController = require('../controller/').commentController;
 const validator = require('../util/validator');
+const passport = require('passport');
 
 module.exports = (router) => {
+	router.use('/comment', passport.authenticate('jwt', {session: false}));
+
 	// Create a comment in the database and return it 
 	router.post('/comment', commentController.createComment);
 

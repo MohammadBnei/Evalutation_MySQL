@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const sessionStore = new MySQLStore(require('./config/config'))
+const sessionStore = new MySQLStore(require('./config/config'));
 
 
 // Express session middleware

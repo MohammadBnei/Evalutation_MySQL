@@ -7,6 +7,7 @@ module.exports = {
     async createUser(req, res) {
         try {
             let newUser = req.body;
+            console.log({newUser})
             let result = await commonModel.searchUser({
                 email: newUser.email
             });
@@ -14,6 +15,8 @@ module.exports = {
             if (result.length) throw new Error('Email taken');
             
             result = await userModel.createUser(req.body);
+
+            if (result.length) result = result[0];
 
             res.status(201).send(result);
         } catch (error) {

@@ -3,18 +3,20 @@ const validator = require('../util/validator');
 const passport = require('passport');
 
 module.exports = (router) => {
+	router.use('/article', passport.authenticate('jwt', {session: false}));
+
 	// Create a article in the database and return it 
-	router.post('/article', passport.authenticate('jwt', {session: false}),  articleController.createArticle);
+	router.post('/article',   articleController.createArticle);
 
 	// Seach for a article by its id
-	router.get('/article/:id', articleController.getArticleById);
+	router.get('/article/:id',  articleController.getArticleById);
 
 	// Get all articles
-	router.get('/articles', passport.authenticate('jwt', {session: false}), articleController.getArticles);
+	router.get('/articles',  articleController.getArticles);
 
 	// Update a article (will update every parameters present in the JSON object passed)
-	router.put('/article/:id', articleController.updateArticle);
+	router.put('/article/:id',  articleController.updateArticle);
 
 	// Delete an article by its id
-	router.delete('/article/:id', articleController.deleteArticle);
+	router.delete('/article/:id',  articleController.deleteArticle);
 }

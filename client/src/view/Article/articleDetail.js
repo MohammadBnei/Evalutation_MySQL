@@ -2,7 +2,7 @@ import {View} from 'backbone.marionette';
 import moment from 'moment';
 import Radio from 'backbone.radio';
 import ArticleModifView from './ArticleModif';
-//import CommentsView from '../comment/Comments';
+import CommentModel from '../../model/Comment';
 import Comments from '../../collection/Comments';
 import CommentsView from '../comment/Comments';
 var articleDetailTemplate = require('./template/articleDetail.hbs');
@@ -16,7 +16,8 @@ var ArticleDetailView = View.extend({
 
   events: {
     'click #remove-button': 'removeArticle',
-    'click #modify-button': 'modifyArticle'
+    'click #modify-button': 'modifyArticle',
+    'click #save-comment': 'saveComment'
   },
 
   triggers: {
@@ -32,7 +33,7 @@ var ArticleDetailView = View.extend({
 
   templateContext () {
     return {
-      articlePostTime: moment(this.model.attributes.createdAt).fromNow(),
+      articlePostTime: moment(this.model.attributes.createdAt).format('LLLL'),
       isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').user_id
     };
   },
@@ -47,6 +48,25 @@ var ArticleDetailView = View.extend({
 
   modifyArticle () {
     this.showChildView('main', new ArticleModifView({model: this.model}));
+  },
+
+  saveComment (e) {
+    e.preventDefault();
+
+    var user = this.sessionChannel.request('get:user');
+
+    var newComment = new CommentModel({
+      content: this.$('#comment-input').val(),
+      user_id: user.user_id,
+      article_id: this.model.attributes.article_id
+    });
+
+    newComment.save(null, {
+      success: (model) => {
+        model.attributes.name = user.name;
+        this.comments.add(model);
+      }
+    });
   }
 });
 
