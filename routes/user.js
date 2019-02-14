@@ -17,4 +17,7 @@ module.exports = (router) => {
 
 	// Delete an user by its id
 	router.delete('/user/:id', passport.authenticate('jwt', {session: false}), userController.deleteUser);
+
+	// Search
+	router.post('/users/search', userController.searchUser);
 }

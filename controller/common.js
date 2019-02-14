@@ -1,7 +1,7 @@
 const errorHandler = require('../util/errorHandler');
 const jwt = require('jsonwebtoken');
 const userModel = require('../model').userModel;
-const commonModel = require('../model').commonModel;
+const articleModel = require('../model').articleModel;
 const sha1 = require('crypto-js/sha1');
 
 module.exports = {
@@ -10,9 +10,7 @@ module.exports = {
         try {
             var newUser = { ...req.body };
 
-            var result = await commonModel.searchUser({
-                email: newUser.email
-            });
+            var result = await userModel.searchUser(newUser.email);
 
             if (result.length) throw new Error('Email taken');
 
@@ -29,7 +27,7 @@ module.exports = {
         try {
             var {email, password} = req.body;
 
-            var users = await commonModel.searchUser({email});
+            var users = await userModel.searchUser(email);
             if (!users.length) throw new Error ('User not found');
 
             let user = users[0];
@@ -58,18 +56,5 @@ module.exports = {
     getSessionUser(req, res) {
         if (!req.user) res.status(401).send('No user connected');
         else res.status(200).send(req.user);
-    },
-
-    async searchArticle(req, res) {
-        var words = req.body.words;
-            categories = req.body.categories;
-
-        try {
-            let results = await commonModel.searchArticle(words, categories);
-
-            res.status(200).send(results);
-        } catch (error) {
-            errorHandler.queryRequestErrorHandler(error, res);
-        }
     }
 };

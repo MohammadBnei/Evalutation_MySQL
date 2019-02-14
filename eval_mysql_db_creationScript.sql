@@ -11,7 +11,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema eval_mysql_db
 -- -----------------------------------------------------
 -- First try to make a scheme using workbench
-DROP SCHEMA IF EXISTS `eval_mysql_db` ;
 
 -- -----------------------------------------------------
 -- Schema eval_mysql_db
@@ -36,7 +35,8 @@ CREATE TABLE IF NOT EXISTS `eval_mysql_db`.`user` (
   `isAdmin` TINYINT NULL DEFAULT 0,
   `createdAt` DATETIME NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  FULLTEXT INDEX `FTS_INDEX_user` (`email`, `name`, `surname`) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `eval_mysql_db`.`article` (
   `title` VARCHAR(255) NOT NULL,
   `content` VARCHAR(255) NOT NULL,
   `img` VARCHAR(255) NULL,
-  `createdAt` DATETIME NOT NULL,
+  `createdAt` DATETIME NOT NULL DEFAULT NOW(),
   `user_id` INT NOT NULL,
   PRIMARY KEY (`article_id`),
   INDEX `fk_user_article_idx` (`user_id` ASC) VISIBLE,

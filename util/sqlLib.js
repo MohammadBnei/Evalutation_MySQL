@@ -95,16 +95,23 @@ module.exports = {
         return query;
     },
 
-    buildSearchByWordsAndCategories(words, categories = []) {
+    buildSearchArticlesByWordsAndCategoriesQuery(words, categories) {
         var categoriesId, categoryQuery = '';
-        if (categories.length) {
+        if (categories) {
             categories.forEach((category) => categoriesId += category.category_id + ', ')
             categoriesId.slice(0, -2);
 
             categoryQuery = `SELECT article.* FROM article INNER JOIN article_category ON article_category.category_id IN (${categoriesId}) UNION `;
         }
 
-        var query = categoryQuery + `SELECT article.* FROM article WHERE MATCH(title, content) AGAINST(${words})`;
+        var query = categoryQuery + `SELECT article.* FROM article WHERE MATCH(title, content) AGAINST('${words}' IN NATURAL LANGUAGE MODE)`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildSearchUsersQuery(words) {
+        var query = `SELECT user.* FROM user WHERE MATCH(email, name, surname) AGAINST('${words}' IN NATURAL LANGUAGE MODE)`;
 
         console.log({query});
         return query;

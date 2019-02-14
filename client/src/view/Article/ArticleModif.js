@@ -8,6 +8,10 @@ var ArticleModifView = View.extend({
     submit: 'saveArticle'
   },
 
+  triggers: {
+    'click #cancel-button': 'click:cancel'
+  },
+
   className: '.modif-article',
 
   template: articleModifTemplate,

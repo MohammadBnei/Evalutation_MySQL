@@ -1,4 +1,4 @@
-import HeaderView from '../view/Header';
+import HeaderView from '../view/header/Header';
 import Radio from 'backbone.radio';
 import Mn from 'backbone.marionette';
 

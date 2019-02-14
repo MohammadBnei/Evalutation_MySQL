@@ -1,6 +1,8 @@
 import {View} from 'backbone.marionette';
 import Radio from 'backbone.radio';
-var navbarTempalte = require('../template/navbar.hbs');
+import Articles from '../../collection/Articles';
+import Users from '../../collection/Users';
+var navbarTempalte = require('./template/navbar.hbs');
 
 var HeaderView = View.extend({
   events: {
@@ -8,7 +10,8 @@ var HeaderView = View.extend({
     'click #all-user-link': 'onShowAllUsers',
     'click #add-user-link': 'onAddUser',
     'click #add-article-link': 'onAddArticle',
-    'click #logout-button': 'onLogout'
+    'click #logout-button': 'onLogout',
+    'click #search-button': 'onSearch'
   },
 
   initialize () {
@@ -46,6 +49,38 @@ var HeaderView = View.extend({
 
   onAddArticle () {
     this.mainChannel.request('show:article:creation:view');
+  },
+
+  onSearch (e) {
+    e.preventDefault();
+
+    var values = {};
+
+    this.$('#search-form').serializeArray().forEach(element => {
+      values[element.name] = element.value;
+    });
+
+    for (var i = 0; i < $('.show').length; i ++)
+      $('.show').removeClass('show');
+
+    if (values['options-search'] === 'article') this.articleSearch(values.words, null);
+    if (values['options-search'] === 'user') this.userSearch(values.words);
+  },
+
+  articleSearch (words, category) {
+    var articles = new Articles();
+
+    articles.search(words, category);
+
+    this.mainChannel.request('show:articles:view', articles);
+  },
+
+  userSearch (words) {
+    var users = new Users();
+
+    users.search(words);
+
+    this.mainChannel.request('show:users:view', users);
   }
 });
 

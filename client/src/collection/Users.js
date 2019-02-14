@@ -9,6 +9,20 @@ var Users = Backbone.Collection.extend({
     if (! a.attributes.name) return 0;
     if (! b.attributes.name) return - 1;
     return a.attributes.name.localeCompare(b.attributes.name);
+  },
+
+  search (words) {
+    Backbone.ajax({
+      url: this.url + '/search',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({words}),
+      xhrFields: {
+        withCredentials: false
+      },
+      success: (res) => this.add(res),
+      error: (error) => console.error(error)
+    });
   }
 });
 

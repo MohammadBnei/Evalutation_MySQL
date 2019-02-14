@@ -56,9 +56,9 @@ module.exports = {
     },
     // End of CRUD Operations
 
-    // Get all articles from an admin
-    async getArticlesByAdmin(req, res) {
-        const user_id = req.params.id || req.user.user_id;
+    // Get all articles from a user
+    async getArticlesByUser(req, res) {
+        const user_id = req.params.id;
 
         try {
             let results = await articleModel.getArticlesByUser(user_id);
@@ -68,4 +68,19 @@ module.exports = {
             errorHandler.queryRequestErrorHandler(error, res);
         }
     },
+
+    async searchArticle(req, res) {
+        var words = req.body.words;
+            categories = req.body.categories;
+
+        console.log({words, categories})
+
+        try {
+            let results = await articleModel.searchArticle(words, categories);
+
+            res.status(200).send(results);
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
+    }
 };

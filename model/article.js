@@ -43,9 +43,15 @@ module.exports = {
     },
     // End of CRUD Operations
 
-    async getArticlesByAdmin(user_id) {
+    async getArticlesByUser(user_id) {
         var results = pool.query(sqlLib.buildFindElemByModelQuery('article', {user_id}));
 
         return results;
+    },
+
+    async searchArticle(words, categories) {
+        var result = pool.query(sqlLib.buildSearchArticlesByWordsAndCategoriesQuery(words, categories));
+
+        return result;
     },
 };

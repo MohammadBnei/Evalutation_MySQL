@@ -24,6 +24,10 @@ var ArticleDetailView = View.extend({
     'click #close-button': 'click:close'
   },
 
+  childViewEvents: {
+    'click:cancel': 'render'
+  },
+
   regions: {
     main: '.article-region',
     comments: '.comment-region'

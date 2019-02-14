@@ -35,8 +35,19 @@
     <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="collapse" data-target="#search-menu" aria-expanded="false" aria-controls="search-menu">Search menu</button>
     <div class="col-4">
       <div class="collapse" id="search-menu">
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" id="search-form">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="words" required>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+              <input type="radio" name="options-search" value="article" autocomplete="off" checked> Article
+            </label>
+            {{#if isAdmin}}
+              <label class="btn btn-secondary">
+                <input type="radio" name="options-search" value="user" autocomplete="off"> User
+              </label>
+            {{/if}}
+          </div>
+          <button type="submit" class="btn btn-primary" id="search-button">Search</button>
         </form>
       </div>
     </div>

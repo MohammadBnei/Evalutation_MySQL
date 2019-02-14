@@ -22,6 +22,20 @@ var Articles = Backbone.Collection.extend({
   onAdd () {
     console.log('Article added !');
     this.mainChannel.trigger('show:articles:view');
+  },
+
+  search (words, categories) {
+    Backbone.ajax({
+      url: this.url + '/search',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({words, categories}),
+      xhrFields: {
+        withCredentials: false
+      },
+      success: (res) => this.add(res),
+      error: (error) => console.error(error)
+    });
   }
 });
 

@@ -34,7 +34,6 @@ var ArticleView = View.extend({
       values[element.name] = element.value;
     });
 
-    // eslint-disable-next-line camelcase
     values.user_id = this.sessionChannel.request('get:user').user_id;
 
     this.model.save(values);

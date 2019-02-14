@@ -19,4 +19,7 @@ module.exports = (router) => {
 
 	// Delete an article by its id
 	router.delete('/article/:id',  articleController.deleteArticle);
+
+	// Search
+	router.post('/articles/search', articleController.searchArticle);
 }
