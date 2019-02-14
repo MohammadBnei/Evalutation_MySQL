@@ -1,6 +1,6 @@
 {
-  "name": "backbone-webpack",
-  "version": "1.0.0",
+  "name": "client-blog-mohammad",
+  "version": "0.7.0",
   "description": "Backbone.js and Webpack 4 starter package",
   "main": "index.js",
   "scripts": {
