@@ -10,4 +10,4 @@ var Category = Backbone.Model.extend({
   urlRoot: '/category'
 });
 
-module.exports = Category;
+export default Category;

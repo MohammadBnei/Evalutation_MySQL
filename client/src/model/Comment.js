@@ -1,15 +1,17 @@
 import Backbone from 'backbone';
 
-var Comment = Backbone.Model.extend({
+var CommentModel = Backbone.Model.extend({
   defaults: {
-    comment_id: 0,
-    content: '',
-    user_id: 0,
-    article_id: 0,
-    createdAt: ''
+    comment_id: null,
+    content: null,
+    user_id: null,
+    name: null,
+    article_id: null,
+    createdAt: null
   },
   idAttribute: 'comment_id',
-  urlRoot: '/comment'
+
+  urlRoot: 'http://localhost:3000/comment'
 });
 
-module.exports = Comment;
+export default CommentModel;

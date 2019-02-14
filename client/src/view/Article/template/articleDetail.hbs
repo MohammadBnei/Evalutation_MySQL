@@ -16,14 +16,27 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col align-self-start" >
-                {{#if isCreator}}
-                    <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
-                    <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
-                {{/if}}
+                    {{#if isCreator}}
+                        <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
+                        <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
+                    {{/if}}
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#write-comment" aria-expanded="false" aria-controls="write-comment">
+                        Write a comment
+                    </button>
+                    <div class="collapse" id="write-comment">
+                        <form id="comment-form">
+                            <textarea class="form-control" id="comment-input" rows="2" placeholder="Your comment..."></textarea>
+                            <button type="button" id="save-comment" class="btn btn-primary mb-2">Send</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="col align-self-center text-right align-middle h-100 d-inline-block">
                     {{articlePostTime}}
                 </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="list-group comment-region">
             </div>
         </div>
     </div>

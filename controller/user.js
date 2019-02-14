@@ -24,6 +24,8 @@ module.exports = {
     async getUserById(req, res) {
         try {
             let result = await userModel.getUserById(req.params.id);
+
+            if (result.length) result = result[0];
             
             res.status(200).send(result);
         } catch (error) {

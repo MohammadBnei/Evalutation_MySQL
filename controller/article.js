@@ -5,7 +5,6 @@ module.exports = {
     // CRUD
     async createArticle(req, res) {
         try {
-            console.log({body: req.body})
             let result = await articleModel.createArticle(req.body, req.body.categories);
 
             res.status(201).send(result);

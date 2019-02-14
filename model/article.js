@@ -4,7 +4,6 @@ const sqlLib = require('../util/sqlLib');
 module.exports = {
     // CRUD
     async createArticle(article, categories) {
-        console.log({article})
         var query = await pool.query(sqlLib.buildCreateQuery(article, 'article'));
         if (categories) categories.forEach((category) => pool.query(sqlLib.buildCreateQuery({
             category_id: category.category_id,

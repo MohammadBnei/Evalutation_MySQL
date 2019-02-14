@@ -33,6 +33,7 @@ var UserView = View.extend({
     console.log({values});
 
     this.model.save(values);
+    this.mainChannel.request('show:users:view');
   }
 });
 

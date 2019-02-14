@@ -33,7 +33,7 @@ app.use(session({
   key: 'express.sid',
   name: 'MSESSION',
   store: sessionStore,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   secret: 'secret',
 }));
@@ -46,8 +46,7 @@ app.use(cors());
 //custom Middleware for logging the each request going to the API
 app.use((req,res,next) => {
     console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
-    if (req) console.log({body: req.body}, {params: req.params}, {header: req.headers}
-      )
+    if (req) console.log({body: req.body}, {params: req.params}, {header: req.headers}, {cookie: req.cookies})
 
     next();
 });
@@ -80,4 +79,4 @@ app.use(router);
 const server = app.listen(port, () => console.log(`listening on port ${port}!`));
 
 // Making the bidirectional socket listen to the server
-const io = require('socket.io').listen(server);
+//const io = require('socket.io').listen(server);

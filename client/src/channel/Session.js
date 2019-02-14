@@ -5,7 +5,6 @@ import Radio from 'backbone.radio';
 
 var SessionChannel = MnObject.extend({
   defaults: {
-    loggedIn: false,
     user: null,
     cookie: null,
     token: null
@@ -30,6 +29,19 @@ var SessionChannel = MnObject.extend({
   initialize () {
     _.bindAll(this, 'serverLogin', 'serverLogout');
     console.log('Session created!');
+
+    var token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=([^;]*).*$)|^.*$/, '$1');
+    var user_id = document.cookie.replace(/(?:(?:^|.*;\s*)user_id\s*=\s*([^;]*).*$)|^.*$/, '$1');
+
+    if (token && user_id) {
+      this.token = token;
+      this.user = new User({user_id});
+      this.user.fetch({
+        success: () => {
+          this.getChannel().trigger('loggedIn');
+        }
+      });
+    }
   },
 
   url: 'http://localhost:3000/session/',
@@ -85,6 +97,9 @@ var SessionChannel = MnObject.extend({
     this.user = new User(res.user);
     this.token = res.token;
 
+    document.cookie = 'token=' + this.token;
+    document.cookie = 'user_id=' + res.user.user_id;
+
     this.mainChannel.request('show:articles:view');
     this.getChannel().trigger('loggedIn');
   },
@@ -93,8 +108,22 @@ var SessionChannel = MnObject.extend({
     this.user = null;
     this.token = null;
 
+    this.deleteAllCookies();
+
     this.mainChannel.request('show:login:view');
     this.getChannel().trigger('loggedOut');
+  },
+
+  deleteAllCookies () {
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i < cookies.length; i ++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf('=');
+      var name = eqPos > - 1 ? cookie.substr(0, eqPos) : cookie;
+
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    }
   },
 
   onGetToken () {
@@ -102,6 +131,7 @@ var SessionChannel = MnObject.extend({
   },
 
   onGetUser () {
+    if (! this.user) return false;
     return this.user.attributes;
   },
 

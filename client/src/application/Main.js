@@ -11,6 +11,7 @@ import UserCreate from '../view/user/UserCreate';
 import User from '../model/User';
 import ArticleCreate from '../view/article/ArticleCreate';
 import Article from '../model/Article';
+import SessionChannel from '../channel/Session';
 
 const MainApp = Mn.Application.extend({
   region: '#content-region',
@@ -29,10 +30,15 @@ const MainApp = Mn.Application.extend({
   },
 
   onStart () {
-    this.showView(new LoginView());
     Backbone.history.start({
       pushState: true
     });
+    const sessionChannel = new SessionChannel();
+
+    this.sessionChannel = sessionChannel.getChannel();
+
+    if (this.sessionChannel.request('get:user')) this.onShowArticlesView();
+    else this.onShowLoginView();
   },
 
   onShowRegisterView () {

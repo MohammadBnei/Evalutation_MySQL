@@ -1,4 +1,4 @@
-module.exports = (io) => {
+ /** module.exports = (io) => {
     
     // on connection event
     io.on('connection', (socket) => {
@@ -11,3 +11,4 @@ module.exports = (io) => {
 
     io.on('hello back', () => console.log('Everything OK (SocketIo)'))
 };
+*/

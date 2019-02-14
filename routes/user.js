@@ -1,12 +1,13 @@
 const userController = require('../controller/').userController;
 const validator = require('../util/validator');
+const passport = require('passport');
 
 module.exports = (router) => {
 	// Create a user in the database and return it 
 	router.post('/user', userController.createUser);
 
 	// Seach for a user by its id
-	router.get('/user/:id', userController.getUserById);
+	router.get('/user/:id', passport.authenticate('jwt', {session: false}), userController.getUserById);
 
 	// Get all users
 	router.get('/users', userController.getUsers);

@@ -4,8 +4,7 @@ const commentModel = require('../model').commentModel;
 module.exports = {
     // CRUD
     async createComment(req, res) {
-        var newComment = {...req.body,
-            user_id: req.user.user_id};
+        var newComment = req.body;
         try {
             let result = await commentModel.createComment(newComment);
 
@@ -74,7 +73,7 @@ module.exports = {
         try {
             let results = await commentModel.getCommentsByArticle(req.params.id);
 
-            res.status(200).send({results});
+            res.status(200).send(results);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }

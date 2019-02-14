@@ -1,8 +1,26 @@
 import Backbone from 'backbone';
-import Comment from '../model/Comment';
+import CommentModel from '../model/Comment';
 
 var Comments = Backbone.Collection.extend({
-  model: Comment
+  url: 'http://localhost:3000/comments/',
+
+  initialize () {
+    _.bindAll(this, 'fetchCommentsByUser', 'fetchCommentsByArticle');
+  },
+
+  fetchCommentsByUser (id) {
+    this.fetch({
+      url: this.url + 'user/' + id
+    });
+  },
+
+  fetchCommentsByArticle (id) {
+    this.fetch({
+      url: this.url + 'article/' + id
+    });
+  },
+
+  model: CommentModel
 });
 
-module.exports = Comments;
+export default Comments;

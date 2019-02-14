@@ -3,7 +3,18 @@ module.exports = {
     getUsersQuery: () => `SELECT * FROM user`,
     getArticlesQuery: () => `SELECT * FROM article`,
     getCategoriesQuery: () => `SELECT * FROM category`,
-    getCommentsQuery: () => `SELECT * FROM comment`,
+
+    getCommentsQueryFromArticle (id) {
+        let query = `SELECT comment.*, user.name AS name FROM comment LEFT JOIN user ON comment.user_id = user.user_id WHERE comment.article_id = ${id}`;
+        console.log({query});
+        return query;
+    },
+    
+    getCommentsQueryFromUser (id) {
+        let query = `SELECT comment.*, user.name AS name FROM comment LEFT JOIN user ON comment.user_id = user.user_id WHERE comment.user_id = ${id}`;
+        console.log({query});
+        return query;
+    },
 
     // insert into TABLE (ELEMENTS, createdAt) values (VALUES, now());
     buildCreateQuery: (obj, table) => {
