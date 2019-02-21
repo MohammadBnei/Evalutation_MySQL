@@ -13,7 +13,7 @@ var CommentView = View.extend({
   templateContext () {
     return {
       commentPostTime: moment(this.model.attributes.createdAt).fromNow(),
-      isAdmin: this.sessionChannel.request('get:user').isAdmin
+      isAdmin: this.sessionChannel.request('get:user').attributes.isAdmin
     };
   },
 

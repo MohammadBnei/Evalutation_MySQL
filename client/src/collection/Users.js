@@ -20,7 +20,13 @@ var Users = Backbone.Collection.extend({
       xhrFields: {
         withCredentials: false
       },
-      success: (res) => this.add(res),
+      success: (res) => {
+        if (! res.length) Backbone.trigger('flash', {
+          message: 'No results',
+          type: 'info'
+        });
+        this.add(res);
+      },
       error: (error) => console.error(error)
     });
   }

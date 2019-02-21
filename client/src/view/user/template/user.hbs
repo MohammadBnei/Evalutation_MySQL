@@ -9,10 +9,10 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col align-self-start" >
-                    {{#unless isAdmin}}
+                    {{#if modify}}
                     <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
                     <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
-                    {{/unless}}
+                    {{/if}}
                 </div>
                 <div class="col align-self-center text-right align-middle h-100 d-inline-block">
                     Created : {{userCreatedTime}}

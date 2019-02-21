@@ -112,10 +112,12 @@ DROP TABLE IF EXISTS `eval_mysql_db`.`article_category` ;
 CREATE TABLE IF NOT EXISTS `eval_mysql_db`.`article_category` (
   `article_id` INT NOT NULL,
   `category_id` INT NOT NULL,
-  `article_category_id` INT NOT NULL,
+  `article_category_id` INT NOT NULL AUTO_INCREMENT,
+  `createdAt` DATETIME NOT NULL,
   PRIMARY KEY (`article_category_id`),
   INDEX `fk_article_id_idx` (`article_id` ASC) VISIBLE,
   INDEX `fk_category_id_idx` (`category_id` ASC) VISIBLE,
+  UNIQUE INDEX `article_category_id_UNIQUE` (`article_category_id` ASC) VISIBLE,
   CONSTRAINT `fk_article_id`
     FOREIGN KEY (`article_id`)
     REFERENCES `eval_mysql_db`.`article` (`article_id`)

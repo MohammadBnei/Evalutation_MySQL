@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import Comments from '../collection/Comments';
 
 var User = Backbone.Model.extend({
   defaults: {
@@ -11,6 +12,7 @@ var User = Backbone.Model.extend({
 
   urlRoot: 'http://localhost:3000/user',
   idAttribute: 'user_id',
+
   validation: {
     email: {
       required: true,
@@ -25,6 +27,24 @@ var User = Backbone.Model.extend({
       pattern: /^[a-z ,.'-]+$/i,
       msg: 'Please enter a valid surname'
     }
+  },
+
+  getComments () {
+    var comments = new Comments();
+
+    Backbone.ajax({
+      url: 'http://localhost:3000/comments/user/' + this.get('user_id'),
+      contentType: 'application/json',
+      type: 'GET',
+      data: JSON.stringify(this.get('attributes')),
+      xhrFields: {
+        withCredentials: false
+      },
+      success: res => comments.add(res),
+      error: (error) => console.error(error)
+    });
+
+    return comments;
   }
 });
 

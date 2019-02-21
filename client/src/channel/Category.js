@@ -1,4 +1,5 @@
 import {MnObject} from 'backbone.marionette';
+import Categories from '../collection/Categories';
 
 var CategoryChannel = MnObject.extend({
   default: {
@@ -6,8 +7,11 @@ var CategoryChannel = MnObject.extend({
   },
 
   initialize () {
+    this.categories = new Categories();
+
     this.categories.fetch();
   },
+
   channelName: 'category-channel',
 
   radioEvents: {
@@ -16,7 +20,28 @@ var CategoryChannel = MnObject.extend({
 
   radioRequests: {
     'get:categories': 'onGetCategories',
-    'get:category': 'onGetCategory'
+    'get:category:article': 'onGetCategoryArticle',
+    'get:categories:id:by:name': 'onGetCategoriesIdByName',
+    'set:categories': 'onSetCategories'
+  },
+
+  onGetCategoryArticle (ids) {
+    return this.categories.find(category => ids.includes(category.attributes.category_id));
+  },
+
+  onGetCategories () {
+    return this.categories;
+  },
+
+  onSetCategories (categories) {
+    this.categories = categories;
+  },
+
+  onGetCategoriesIdByName (names) {
+    let categories = this.categories.models.filter((category) => names.includes(category.attributes.name)).map(category => category.attributes.category_id);
+
+    console.log({categories});
+    return categories;
   }
 });
 

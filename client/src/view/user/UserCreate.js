@@ -30,8 +30,6 @@ var UserView = View.extend({
       values[element.name] = element.value;
     });
 
-    console.log({values});
-
     this.model.save(values);
     this.mainChannel.request('show:users:view');
   }

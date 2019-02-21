@@ -11,12 +11,19 @@ var ArticleView = View.extend({
 
   template: articleCreateTemplate,
 
+  templateContext () {
+    return {
+      categories: this.categoryChannel.request('get:categories').models
+    };
+  },
+
   regions: {
     main: '.article-region'
   },
 
   sessionChannel: Radio.channel('session-channel'),
   mainChannel: Radio.channel('main-channel'),
+  categoryChannel: Radio.channel('category-channel'),
 
   cancel (e) {
     e.preventDefault();
@@ -30,13 +37,18 @@ var ArticleView = View.extend({
 
     var values = {};
 
-    this.$('form').serializeArray().forEach(element => {
+    this.$('#article-form').serializeArray().forEach(element => {
       values[element.name] = element.value;
     });
 
-    values.user_id = this.sessionChannel.request('get:user').user_id;
+    values.user_id = this.sessionChannel.request('get:user').attributes.user_id;
+    let categories = this.categoryChannel.request('get:categories:id:by:name', $('#categories-input').val());
 
-    this.model.save(values);
+    values.categories = categories;
+
+    this.model.save(values, {
+      success: () => this.mainChannel.request('show:articles:view')
+    });
   }
 });
 

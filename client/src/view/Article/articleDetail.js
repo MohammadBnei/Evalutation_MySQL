@@ -5,6 +5,8 @@ import ArticleModifView from './ArticleModif';
 import CommentModel from '../../model/Comment';
 import Comments from '../../collection/Comments';
 import CommentsView from '../comment/Comments';
+import CategoriesView from '../category/Categories';
+
 var articleDetailTemplate = require('./template/articleDetail.hbs');
 
 var ArticleDetailView = View.extend({
@@ -12,6 +14,11 @@ var ArticleDetailView = View.extend({
     this.comments = new Comments();
     this.comments.fetchCommentsByArticle(this.model.attributes.article_id);
     this.showChildView('comments', new CommentsView({collection: this.comments}));
+  },
+
+  onRender () {
+    this.categories = this.categoryChannel.request('get:category:article', this.model.attributes.categories);
+    this.showChildView('article-category', new CategoriesView({collection: this.categories.collection}));
   },
 
   events: {
@@ -30,7 +37,8 @@ var ArticleDetailView = View.extend({
 
   regions: {
     main: '.article-region',
-    comments: '.comment-region'
+    comments: '.comment-region',
+    'article-category': '.article-category-region'
   },
 
   template: articleDetailTemplate,
@@ -38,13 +46,14 @@ var ArticleDetailView = View.extend({
   templateContext () {
     return {
       articlePostTime: moment(this.model.attributes.createdAt).format('LLLL'),
-      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').user_id
+      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').attributes.user_id
     };
   },
 
   sessionChannel: Radio.channel('session-channel'),
   mainChannel: Radio.channel('main-channel'),
   articleChannel: Radio.channel('article-channel'),
+  categoryChannel: Radio.channel('category-channel'),
 
   removeArticle () {
     this.model.destroy();
@@ -57,7 +66,7 @@ var ArticleDetailView = View.extend({
   saveComment (e) {
     e.preventDefault();
 
-    var user = this.sessionChannel.request('get:user');
+    var user = this.sessionChannel.request('get:user').attributes;
 
     var newComment = new CommentModel({
       content: this.$('#comment-input').val(),
@@ -67,6 +76,7 @@ var ArticleDetailView = View.extend({
 
     newComment.save(null, {
       success: (model) => {
+        $('#write-comment').removeClass('show');
         model.attributes.name = user.name;
         this.comments.add(model);
       }

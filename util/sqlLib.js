@@ -34,6 +34,21 @@ module.exports = {
         return query;
     },
 
+    buildCategoryLinkToArticle (article_id, categories) {
+        let query = '';
+        let values = '';
+
+        categories.forEach((category) => {
+            values += `(${article_id}, ${category}, NOW()),`
+        });
+        values = values.slice(0, -1);
+        
+        query = `INSERT INTO article_category (article_id, category_id, createdAt) VALUES ${values}`;
+
+        console.log({query});
+        return query;
+    },
+
     // select * from TABLE where id = ID;
     buildFindByIdQuery: (obj) => {
         var queryParams = extractObjectInfos(obj);
@@ -112,6 +127,13 @@ module.exports = {
 
     buildSearchUsersQuery(words) {
         var query = `SELECT user.* FROM user WHERE MATCH(email, name, surname) AGAINST('${words}' IN NATURAL LANGUAGE MODE)`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildGetCategoriesIdByArticleQuery(article_id) {
+        var query = `SELECT category_id FROM article_category WHERE article_category.article_id = ${article_id}`;
 
         console.log({query});
         return query;

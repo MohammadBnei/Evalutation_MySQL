@@ -4,7 +4,7 @@ import CommentView from './Comment';
 
 var CommentsView = CollectionView.extend({
   collectionEvents: {
-    'sync update add': 'render'
+    sync: 'render'
   },
 
   childView: CommentView,

@@ -79,16 +79,17 @@ var SessionChannel = MnObject.extend({
   },
 
   onLogout () {
-    Backbone.ajax({
+    /**Backbone.ajax({
       url: this.url + 'signout',
       contentType: 'application/json',
       xhrFields: {
         withCredentials: false
       },
       type: 'POST',
-      success: this.serverLogout,
+      success: ,
       error: (error, text) => console.error(text, {error})
-    });
+    });  */
+    this.serverLogout();
   },
 
   serverLogin (res) {
@@ -132,7 +133,7 @@ var SessionChannel = MnObject.extend({
 
   onGetUser () {
     if (! this.user) return false;
-    return this.user.attributes;
+    return this.user;
   },
 
   onIsLoggedIn () {

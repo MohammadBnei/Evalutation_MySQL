@@ -10,12 +10,15 @@ var HeaderView = View.extend({
     'click #all-user-link': 'onShowAllUsers',
     'click #add-user-link': 'onAddUser',
     'click #add-article-link': 'onAddArticle',
+    'click #add-category-link': 'onAddCategory',
     'click #logout-button': 'onLogout',
-    'click #search-button': 'onSearch'
+    'click #informations-link': 'onShowInformations',
+    'click #comments-link': 'onShowComments',
+    submit: 'onSearch'
   },
 
-  initialize () {
-    this.listenTo(this.sessionChannel, 'loggedIn loggedOut', this.render);
+  initialize (categories) {
+    this.categories = categories;
   },
 
   template: navbarTempalte,
@@ -51,6 +54,18 @@ var HeaderView = View.extend({
     this.mainChannel.request('show:article:creation:view');
   },
 
+  onAddCategory () {
+    this.mainChannel.request('show:category:creation:view');
+  },
+
+  onShowInformations () {
+    this.mainChannel.request('show:informations:view');
+  },
+
+  onShowComments () {
+    this.mainChannel.request('show:comments:from:user', this.sessionChannel.request('get:user'));
+  },
+
   onSearch (e) {
     e.preventDefault();
 
@@ -60,8 +75,7 @@ var HeaderView = View.extend({
       values[element.name] = element.value;
     });
 
-    for (var i = 0; i < $('.show').length; i ++)
-      $('.show').removeClass('show');
+    $('#search-menu').removeClass('show');
 
     if (values['options-search'] === 'article') this.articleSearch(values.words, null);
     if (values['options-search'] === 'user') this.userSearch(values.words);

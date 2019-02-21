@@ -20,7 +20,12 @@ var UserView = View.extend({
 
   templateContext () {
     return {
-      userCreatedTime: moment(this.model.attributes.createdAt).fromNow()
+      userCreatedTime: moment(this.model.attributes.createdAt).fromNow(),
+      modify: () => {
+        if (this.model.attributes.user_id === this.sessionChannel.request('get:user').attributes.user_id) return true;
+        if (! this.model.attributes.isAdmin) return true;
+        return false;
+      }
     };
   },
 

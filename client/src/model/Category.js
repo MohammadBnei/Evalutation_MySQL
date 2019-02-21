@@ -2,12 +2,12 @@ import Backbone from 'backbone';
 
 var Category = Backbone.Model.extend({
   defaults: {
-    category_id: 0,
+    category_id: null,
     name: '',
     createdAt: ''
   },
   idAttribute: 'category_id',
-  urlRoot: '/category'
+  urlRoot: 'http://localhost:3000/category'
 });
 
 export default Category;

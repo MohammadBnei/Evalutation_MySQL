@@ -6,7 +6,8 @@ var Article = Backbone.Model.extend({
     user_id: null,
     title: null,
     content: null,
-    img: null
+    img: null,
+    categories: null
   },
 
   idAttribute: 'article_id',

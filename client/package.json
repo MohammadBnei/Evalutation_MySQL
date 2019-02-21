@@ -16,6 +16,7 @@
     "backbone.marionette": "*",
     "bootstrap": "*",
     "cloudinary": "^1.13.2",
+    "cloudinary-core": "^2.6.2",
     "eslint-plugin-backbone": "*",
     "handlebars": "*",
     "handlebars-loader": "*",

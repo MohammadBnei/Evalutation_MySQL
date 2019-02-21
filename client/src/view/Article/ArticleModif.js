@@ -34,14 +34,16 @@ var ArticleModifView = View.extend({
 
     var values = {};
 
-    this.$('form').serializeArray().forEach(element => {
+    this.$('#article-form').serializeArray().forEach(element => {
       values[element.name] = element.value;
     });
 
     // eslint-disable-next-line camelcase
-    values.user_id = this.sessionChannel.request('get:user').user_id;
+    values.user_id = this.sessionChannel.request('get:user').attributes.user_id;
 
     this.model.save(values);
+
+    this.trigger('click:cancel');
   }
 });
 

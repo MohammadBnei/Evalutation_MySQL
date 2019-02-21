@@ -29,12 +29,7 @@ var ArticleView = View.extend({
   mainChannel: Radio.channel('main-channel'),
   articleChannel: Radio.channel('article-channel'),
 
-  initialize () {
-    this.listenTo(this.articleChannel, 'click:showDetail', this.render, this);
-  },
-
   goToDetailView () {
-    this.articleChannel.trigger('click:showDetail');
     this.showChildView('main', new ArticleDetail({model: this.model}));
   }
 });

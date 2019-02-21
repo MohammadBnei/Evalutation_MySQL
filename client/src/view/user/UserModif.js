@@ -5,7 +5,7 @@ var userModifTemplate = require('./template/userModif.hbs');
 
 var UserModifView = View.extend({
   events: {
-    'click #save-button': 'saveUser'
+    submit: 'saveUser'
   },
 
   regions: {

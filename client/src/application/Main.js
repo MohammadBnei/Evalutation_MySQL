@@ -5,6 +5,7 @@ import LoginView from '../view/identification/Login';
 import RegisterView from '../view/identification/Register';
 import ArticlesView from '../view/article/Articles';
 import UsersView from '../view/user/Users';
+import UserView from '../view/user/User';
 import Articles from '../collection/Articles';
 import Users from '../collection/Users';
 import UserCreate from '../view/user/UserCreate';
@@ -12,6 +13,10 @@ import User from '../model/User';
 import ArticleCreate from '../view/article/ArticleCreate';
 import Article from '../model/Article';
 import SessionChannel from '../channel/Session';
+import CategoryChannel from '../channel/Category';
+import CategoryCreate from '../view/category/CategoryCreate';
+import Category from '../model/Category';
+import CommentsView from '../view/comment/Comments';
 
 const MainApp = Mn.Application.extend({
   region: '#content-region',
@@ -20,13 +25,17 @@ const MainApp = Mn.Application.extend({
   sessionChannel: Radio.channel('sessionChannel'),
 
   radioRequests: {
-    'show:register:view': 'onShowRegisterView',
-    'show:login:view': 'onShowLoginView',
-    'show:articles:view': 'onShowArticlesView',
-    'show:articleModif:view': 'onShowArticleModifView',
-    'show:users:view': 'onShowUsersView',
+    'show:register:view': 'showRegisterView',
+    'show:login:view': 'showLoginView',
+    'show:articles:view': 'showArticlesView',
+    'show:articleModif:view': 'showArticleModifView',
+    'show:users:view': 'showUsersView',
     'show:user:creation:view': 'showUserCreationView',
-    'show:article:creation:view': 'showArticleCreationView'
+    'show:article:creation:view': 'showArticleCreationView',
+    'show:category:creation:view': 'showCategoryCreationView',
+    'show:categories:view': 'showCategoriesView',
+    'show:informations:view': 'showInformationsView',
+    'show:comments:from:user': 'onShowCommentsFromUser'
   },
 
   onStart () {
@@ -34,22 +43,24 @@ const MainApp = Mn.Application.extend({
       pushState: true
     });
     const sessionChannel = new SessionChannel();
+    const categoryChannel = new CategoryChannel();
 
     this.sessionChannel = sessionChannel.getChannel();
+    this.categoryChannel = categoryChannel.getChannel();
 
-    if (this.sessionChannel.request('get:user')) this.onShowArticlesView();
-    else this.onShowLoginView();
+    if (this.sessionChannel.request('get:user')) this.showArticlesView();
+    else this.showLoginView();
   },
 
-  onShowRegisterView () {
+  showRegisterView () {
     this.showView(new RegisterView());
   },
 
-  onShowLoginView () {
+  showLoginView () {
     this.showView(new LoginView());
   },
 
-  onShowArticlesView (articles) {
+  showArticlesView (articles) {
     if (! articles) {
       articles = new Articles();
       articles.fetch();
@@ -57,7 +68,7 @@ const MainApp = Mn.Application.extend({
     this.showView(new ArticlesView({collection: articles}));
   },
 
-  onShowUsersView (users) {
+  showUsersView (users) {
     if (! users) {
       users = new Users();
       users.fetch();
@@ -71,6 +82,20 @@ const MainApp = Mn.Application.extend({
 
   showArticleCreationView () {
     this.showView(new ArticleCreate({model: new Article()}));
+  },
+
+  showCategoryCreationView () {
+    this.showView(new CategoryCreate({model: new Category()}));
+  },
+
+  showInformationsView () {
+    this.showView(new UserView({model: this.sessionChannel.request('get:user')}));
+  },
+
+  onShowCommentsFromUser (user) {
+    let comments = user.getComments();
+
+    this.showView(new CommentsView({collection: comments}));
   }
 });
 
