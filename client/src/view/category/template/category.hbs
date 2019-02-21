@@ -2,6 +2,9 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
+            {{#if isAdmin}}
+                <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
+            {{/if}}
         </div>
     </div>
 </div>

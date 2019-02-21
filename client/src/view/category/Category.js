@@ -7,7 +7,8 @@ var CategoryView = View.extend({
   events: {
     'click #save-button': 'saveCategory',
     'click #remove-button': 'removeCategory',
-    'click #cancel-button': 'render'
+    'click #cancel-button': 'render',
+    'click #modify-button': 'modifyArticle'
   },
 
   regions: {
@@ -20,6 +21,12 @@ var CategoryView = View.extend({
 
   template: categoryTemplate,
 
+  templateContext () {
+    return {
+      isAdmin: () => this.sessionChannel.request('get:user').attributes.isAdmin
+    };
+  },
+
   sessionChannel: Radio.channel('session-channel'),
   mainChannel: Radio.channel('main-channel'),
 
@@ -28,7 +35,7 @@ var CategoryView = View.extend({
     this.model.destroy();
   },
 
-  goToModifyView () {
+  modifyArticle () {
     this.showChildView('main', new CategoryModif({model: this.model}));
   }
 });
