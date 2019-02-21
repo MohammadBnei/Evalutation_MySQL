@@ -1,0 +1,48 @@
+{
+  "name": "client-blog-mohammad",
+  "version": "0.7.0",
+  "description": "Backbone.js and Webpack 4 starter package",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open ",
+    "dist": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "*",
+    "backbone-validation": "*",
+    "backbone.marionette": "*",
+    "bootstrap": "*",
+    "cloudinary": "^1.13.2",
+    "cloudinary-core": "^2.6.2",
+    "eslint-plugin-backbone": "*",
+    "handlebars": "*",
+    "handlebars-loader": "*",
+    "jquery": "*",
+    "jquery-serializejson": "*",
+    "js-cookie": "*",
+    "moment": "*",
+    "popper": "*",
+    "popper.js": "*",
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-loader": "*",
+    "babel-preset-env": "*",
+    "css-loader": "*",
+    "eslint": "*",
+    "eslint-loader": "*",
+    "html-webpack-plugin": "*",
+    "mini-css-extract-plugin": "*",
+    "node-sass": "*",
+    "sass-loader": "*",
+    "style-loader": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*"
+  }
+}

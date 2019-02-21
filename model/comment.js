@@ -11,13 +11,13 @@ module.exports = {
         
     },
 
-    async getCommentById(id) {
+    getCommentById(id) {
         var result = pool.query(sqlLib.buildFindByIdQuery({comment_id: id}));
 
         return result;        
     },
 
-    async getComments() {
+    getComments() {
         var results = pool.query(sqlLib.getCommentsQuery());
 
         return results;
@@ -31,20 +31,20 @@ module.exports = {
         
     },
 
-    async deleteComment(id) {
-        await pool.query(sqlLib.buildDeleteQuery({comment_id: id}));
+    deleteComment(id) {
+        var result = pool.query(sqlLib.buildDeleteQuery({comment_id: id}));
         if (result.affectedRows === 0) throw new Error('Wrong comment id');
     },
     // End of CRUD Operations
 
-    async getCommentsByUser(user_id) {
-        var results = pool.query(sqlLib.buildFindElemByModelQuery('comment', {user_id}));
+    getCommentsByUser(user_id) {
+        var results = pool.query(sqlLib.getCommentsQueryFromUser(user_id));
 
         return results;
     },
 
-    async getCommentsByArticle(article_id) {
-        var results = pool.query(sqlLib.buildFindElemByModelQuery('comment', {article_id}));
+    getCommentsByArticle(article_id) {
+        var results = pool.query(sqlLib.getCommentsQueryFromArticle(article_id));
 
         return results;
     }

@@ -3,11 +3,23 @@ module.exports = {
     getUsersQuery: () => `SELECT * FROM user`,
     getArticlesQuery: () => `SELECT * FROM article`,
     getCategoriesQuery: () => `SELECT * FROM category`,
-    getCommentsQuery: () => `SELECT * FROM comment`,
+
+    getCommentsQueryFromArticle (id) {
+        let query = `SELECT comment.*, user.name AS name FROM comment LEFT JOIN user ON comment.user_id = user.user_id WHERE comment.article_id = ${id}`;
+        console.log({query});
+        return query;
+    },
+    
+    getCommentsQueryFromUser (id) {
+        let query = `SELECT comment.*, user.name AS name FROM comment LEFT JOIN user ON comment.user_id = user.user_id WHERE comment.user_id = ${id}`;
+        console.log({query});
+        return query;
+    },
 
     // insert into TABLE (ELEMENTS, createdAt) values (VALUES, now());
     buildCreateQuery: (obj, table) => {
         var sets = extractSets(obj, false);
+        
 
         var columns = '';
         sets.forEach((set) => columns += set.column + ',');
@@ -17,6 +29,21 @@ module.exports = {
         values = values.slice(0, -1).replace('"true"');
 
         var query = `INSERT INTO ${table} (${columns} createdAt) VALUES (${values} NOW())`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildCategoryLinkToArticle (article_id, categories) {
+        let query = '';
+        let values = '';
+
+        categories.forEach((category) => {
+            values += `(${article_id}, ${category}, NOW()),`
+        });
+        values = values.slice(0, -1);
+        
+        query = `INSERT INTO article_category (article_id, category_id, createdAt) VALUES ${values}`;
 
         console.log({query});
         return query;
@@ -33,6 +60,7 @@ module.exports = {
 
     // update TABLE set ELEMENTS where id = ID;
     buildUpdateQuery: (obj) => {
+        obj.createdAt = null;
         var queryParams = extractObjectInfos(obj);
         var sets = extractSets(obj, true);
 
@@ -41,8 +69,7 @@ module.exports = {
         // Fill the query SET clause
         sets.forEach((set) => querySet += set.column + ' = "' + set.value + '",');
 
-        // Removing the last ','
-        querySet = querySet.slice(0,-1);
+        querySet += ' createdAt = NOW()'
 
         var query = `UPDATE ${queryParams.table} SET ${querySet} WHERE ${queryParams.idSet}`
         console.log({query, queryParams});
@@ -83,16 +110,30 @@ module.exports = {
         return query;
     },
 
-    buildSearchByWordsAndCategories(words, categories = []) {
+    buildSearchArticlesByWordsAndCategoriesQuery(words, categories) {
         var categoriesId, categoryQuery = '';
-        if (categories.length) {
+        if (categories) {
             categories.forEach((category) => categoriesId += category.category_id + ', ')
             categoriesId.slice(0, -2);
 
             categoryQuery = `SELECT article.* FROM article INNER JOIN article_category ON article_category.category_id IN (${categoriesId}) UNION `;
         }
 
-        var query = categoryQuery + `SELECT article.* FROM article WHERE MATCH(title, content) AGAINST(${words})`;
+        var query = categoryQuery + `SELECT article.* FROM article WHERE MATCH(title, content) AGAINST('${words}' IN NATURAL LANGUAGE MODE)`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildSearchUsersQuery(words) {
+        var query = `SELECT user.* FROM user WHERE MATCH(email, name, surname) AGAINST('${words}' IN NATURAL LANGUAGE MODE)`;
+
+        console.log({query});
+        return query;
+    },
+
+    buildGetCategoriesIdByArticleQuery(article_id) {
+        var query = `SELECT category_id FROM article_category WHERE article_category.article_id = ${article_id}`;
 
         console.log({query});
         return query;
@@ -112,7 +153,7 @@ var extractObjectInfos = (obj) => {
         // x_id
         idSet: ''
     }
-    console.log({obj})
+
     queryParams.idSet = Object.keys(obj).filter((key) => key.match(OBJ_ID_REGEX))[0];
     queryParams.id = obj[queryParams.idSet];
     queryParams.table = queryParams.idSet.slice(0, -3);
@@ -127,11 +168,14 @@ var extractObjectInfos = (obj) => {
 var extractSets = (obj, removeIdFields) => {
     var set = [];
 
-    if (removeIdFields) obj = Object.keys(obj).filter((key) => !key.match(OBJ_ID_REGEX));
+    var keys = Object.keys(obj);
 
-    Object.keys(obj).forEach((key) => {
-        if (obj[key] != undefined) {
+    if (removeIdFields) keys = keys.filter((key) => !key.match(OBJ_ID_REGEX));
+
+    keys.forEach((key) => {
+        if (obj[key] || typeof(obj[key]) === 'boolean') {
             if (typeof(obj[key]) === 'boolean') obj[key] = obj[key] ? 1 : 0;
+
             set.push({
                 column: key,
                 value: obj[key]

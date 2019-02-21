@@ -5,13 +5,9 @@ module.exports = {
     // CRUD
     async createUser(req, res) {
         try {
-            let result = await commonModel.searchUser({
-                email: newUser.email
-            });
-
-            if (result.length) throw new Error('Email taken');
-            
             result = await userModel.createUser(req.body);
+
+            if (result.length) result = result[0];
 
             res.status(201).send(result);
         } catch (error) {
@@ -22,6 +18,8 @@ module.exports = {
     async getUserById(req, res) {
         try {
             let result = await userModel.getUserById(req.params.id);
+
+            if (result.length) result = result[0];
             
             res.status(200).send(result);
         } catch (error) {
@@ -60,4 +58,16 @@ module.exports = {
         }
     },
     // End of CRUD Operations
+
+    async searchUser(req, res) {
+        var words = req.body.words;
+
+        try {
+            let results = await userModel.searchUser(words);
+
+            res.status(200).send(results);
+        } catch (error) {
+            errorHandler.queryRequestErrorHandler(error, res);
+        }
+    }
 }

@@ -1,7 +1,9 @@
 const categoryController = require('../controller/').categoryController;
 const validator = require('../util/validator');
+const passport = require('passport');
 
 module.exports = (router) => {
+	router.use('/category', passport.authenticate('jwt', {session: false}));
 	// Create a category in the database and return it 
 	router.post('/category', categoryController.createCategory);
 

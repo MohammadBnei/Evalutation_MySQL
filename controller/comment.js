@@ -4,10 +4,11 @@ const commentModel = require('../model').commentModel;
 module.exports = {
     // CRUD
     async createComment(req, res) {
-        var newComment = {...req.body,
-            user_id: req.user.user_id};
+        var newComment = req.body;
         try {
             let result = await commentModel.createComment(newComment);
+
+            if(result.length) result = result[0];
 
             res.status(201).send(result);
         } catch (error) {
@@ -18,6 +19,8 @@ module.exports = {
     async getCommentById(req, res) {
         try {
             let result = await commentModel.getCommentById(req.params.id);
+
+            if(result.length) result = result[0];
             
             res.status(200).send(result);
         } catch (error) {
@@ -37,7 +40,7 @@ module.exports = {
 
     async updateComment(req, res) {
         try {
-            let comment = {...req.body, comment_id: req.params.id};
+            let comment = req.body;
             let result = await commentModel.updateComment(comment);
 
             res.status(200).send(result);
@@ -59,7 +62,7 @@ module.exports = {
 
     // Get all comments from a user
     async getCommentsByUser(req, res) {
-        const user_id = req.params.id || req.user.user_id;
+        const user_id = req.params.id;
         try {
             let results = await commentModel.getCommentsByUser(user_id);
 
@@ -74,7 +77,7 @@ module.exports = {
         try {
             let results = await commentModel.getCommentsByArticle(req.params.id);
 
-            res.status(200).send({results});
+            res.status(200).send(results);
         } catch (error) {
             errorHandler.queryRequestErrorHandler(error, res);
         }

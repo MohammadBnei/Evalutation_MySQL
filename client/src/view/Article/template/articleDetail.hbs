@@ -1,0 +1,46 @@
+<div class="container-fluid article-region">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">{{content}}</p>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="close" id="close-button" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col align-self-start" >
+                    {{#if isCreator}}
+                        <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
+                        <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
+                    {{/if}}
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#write-comment" aria-expanded="false" aria-controls="write-comment">
+                        Write a comment
+                    </button>
+                    <div class="collapse" id="write-comment">
+                        <form id="comment-form">
+                            <textarea class="form-control" id="comment-input" rows="2" placeholder="Your comment..."></textarea>
+                            <button type="button" id="save-comment" class="btn btn-primary mb-2">Send</button>
+                        </form>
+                    </div>
+                    <div class="text-center article-category-region">
+                    
+                    </div>
+                </div>
+                <div class="col align-self-center text-right align-middle h-100 d-inline-block">
+                    {{articlePostTime}}
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="list-group comment-region">
+            </div>
+        </div>
+    </div>
+</div>

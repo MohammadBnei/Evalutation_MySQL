@@ -1,30 +1,28 @@
 // importing necessary modules for Passport
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const {Strategy, ExtractJwt} = require('passport-jwt');
 const userModel = require('../model').userModel;
 
-module.exports = (app) => {
 
+
+module.exports = (app) => {
+    
     // Initialize Passport session
     app.use(passport.initialize());
     app.use(passport.session());
-    
+
+    const opts = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: 'secret'
+    };
+
     // Creating the logic for the sign in of users
-    passport.use(new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback : true
-    }, async (req, email, password, done) => {
-        if (!email || !password) {
-            return done(null, false);
-        }
+    passport.use(new Strategy(opts, async (payload, done) => {
+        console.log('Passport JWT Strategy');
         try {
-            var users = await userModel.searchUser({email});
-            if (!users.length) return done(null, false);
+            var user = await userModel.getUserById(payload.user_id);
 
-            let user = users[0];
-
-            if (user.password != sha1(password)) return done(null, false)
+            if (!user) return done(null, false);
 
             return done(null, user);
         } catch (error) {
@@ -37,7 +35,7 @@ module.exports = (app) => {
 
     passport.deserializeUser(async (user_id, done) => {
         try {
-            var result = await pool.query(sqlLib.buildFindByIdQuery({user_id}));
+            var result = await userModel.getUserById(user_id);
             return done(null, result[0]);
         } catch (error) {
             console.log(error);
