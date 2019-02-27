@@ -17,6 +17,7 @@ import CategoryChannel from '../channel/Category';
 import CategoryCreate from '../view/category/CategoryCreate';
 import Category from '../model/Category';
 import CommentsView from '../view/comment/Comments';
+import CategoriesView from '../view/category/Categories';
 
 const MainApp = Mn.Application.extend({
   region: '#content-region',
@@ -35,7 +36,7 @@ const MainApp = Mn.Application.extend({
     'show:category:creation:view': 'showCategoryCreationView',
     'show:categories:view': 'showCategoriesView',
     'show:informations:view': 'showInformationsView',
-    'show:comments:from:user': 'onShowCommentsFromUser'
+    'show:comments:from:user': 'showCommentsFromUser'
   },
 
   onStart () {
@@ -92,10 +93,17 @@ const MainApp = Mn.Application.extend({
     this.showView(new UserView({model: this.sessionChannel.request('get:user')}));
   },
 
-  onShowCommentsFromUser (user) {
+  showCommentsFromUser (user) {
     let comments = user.getComments();
 
     this.showView(new CommentsView({collection: comments}));
+  },
+
+  showCategoriesView () {
+    this.showView(new CategoriesView({
+      collection: this.categoryChannel.request('get:categories'),
+      childViewOptions: {showControls: true}
+    }));
   }
 });
 

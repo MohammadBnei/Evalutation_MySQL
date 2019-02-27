@@ -8,9 +8,10 @@ var Articles = Backbone.Collection.extend({
   model: Article,
 
   mainChannel: Radio.channel('main-channel'),
+  flashChannel: Radio.channel('flash-channel'),
 
   events: {
-    'change add': 'onAdd'
+    add: 'onAdd'
   },
 
   comparator: (a, b) => {
@@ -20,7 +21,10 @@ var Articles = Backbone.Collection.extend({
   },
 
   onAdd () {
-    console.log('Article added !');
+    this.flashChannel.request('new:flash', {
+      type: 'success',
+      message: 'New Article created !'
+    });
     this.mainChannel.trigger('show:articles:view');
   },
 

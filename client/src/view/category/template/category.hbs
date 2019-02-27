@@ -2,8 +2,9 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
-            {{#if isAdmin}}
+            {{#if showControls}}
                 <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
+                <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
             {{/if}}
         </div>
     </div>

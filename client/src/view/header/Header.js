@@ -14,11 +14,8 @@ var HeaderView = View.extend({
     'click #logout-button': 'onLogout',
     'click #informations-link': 'onShowInformations',
     'click #comments-link': 'onShowComments',
+    'click #all-category-link': 'onShowCategories',
     submit: 'onSearch'
-  },
-
-  initialize (categories) {
-    this.categories = categories;
   },
 
   template: navbarTempalte,
@@ -95,6 +92,10 @@ var HeaderView = View.extend({
     users.search(words);
 
     this.mainChannel.request('show:users:view', users);
+  },
+
+  onShowCategories () {
+    this.mainChannel.request('show:categories:view');
   }
 });
 

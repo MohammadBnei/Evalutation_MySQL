@@ -12,6 +12,7 @@ var SessionChannel = MnObject.extend({
 
   channelName: 'session-channel',
   mainChannel: Radio.channel('main-channel'),
+  flashChannel: Radio.channel('flash-channel'),
 
   radioEvents: {
     'connect:session': (msg) => console.log(`${msg} connected to session`)
@@ -79,16 +80,6 @@ var SessionChannel = MnObject.extend({
   },
 
   onLogout () {
-    /**Backbone.ajax({
-      url: this.url + 'signout',
-      contentType: 'application/json',
-      xhrFields: {
-        withCredentials: false
-      },
-      type: 'POST',
-      success: ,
-      error: (error, text) => console.error(text, {error})
-    });  */
     this.serverLogout();
   },
 
@@ -103,6 +94,10 @@ var SessionChannel = MnObject.extend({
 
     this.mainChannel.request('show:articles:view');
     this.getChannel().trigger('loggedIn');
+    this.flashChannel.request('new:flash', {
+      message: 'Logged in !',
+      type: 'success'
+    });
   },
 
   serverLogout () {

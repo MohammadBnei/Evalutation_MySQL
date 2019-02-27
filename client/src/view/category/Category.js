@@ -8,22 +8,23 @@ var CategoryView = View.extend({
     'click #save-button': 'saveCategory',
     'click #remove-button': 'removeCategory',
     'click #cancel-button': 'render',
-    'click #modify-button': 'modifyArticle'
+    'click #modify-button': 'modifyCategory'
   },
 
   regions: {
     main: '.category-region'
   },
 
-  initialize () {
-    console.log('Category view created');
+  initialize (options) {
+    this.showControls = options.showControls;
   },
 
   template: categoryTemplate,
 
   templateContext () {
     return {
-      isAdmin: () => this.sessionChannel.request('get:user').attributes.isAdmin
+      isAdmin: () => this.sessionChannel.request('get:user').attributes.isAdmin,
+      showControls: this.showControls
     };
   },
 
@@ -35,7 +36,7 @@ var CategoryView = View.extend({
     this.model.destroy();
   },
 
-  modifyArticle () {
+  modifyCategory () {
     this.showChildView('main', new CategoryModif({model: this.model}));
   }
 });

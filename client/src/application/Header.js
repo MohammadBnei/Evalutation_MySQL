@@ -15,7 +15,7 @@ var HeaderApp = Mn.Application.extend({
   },
 
   async showHeader () {
-    this.showView(new HeaderView(this.categoryChannel.request('get:categories')));
+    this.showView(new HeaderView());
   },
 
   hideHeader () {

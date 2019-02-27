@@ -44,13 +44,14 @@ require('./config/passport')(app);
 app.use(cors());
 
 //custom Middleware for logging the each request going to the API
+/**
 app.use((req,res,next) => {
     console.log(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
     if (req) console.log({body: req.body}, {params: req.params}, {header: req.headers}, {cookie: req.cookies})
 
     next();
 });
-
+ */
 
 
 // Handling Promise errors

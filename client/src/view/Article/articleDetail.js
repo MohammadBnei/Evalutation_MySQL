@@ -18,7 +18,10 @@ var ArticleDetailView = View.extend({
 
   onRender () {
     this.categories = this.categoryChannel.request('get:category:article', this.model.attributes.categories);
-    this.showChildView('article-category', new CategoriesView({collection: this.categories.collection}));
+    this.showChildView('article-category', new CategoriesView({
+      collection: this.categories,
+      childViewOptions: {showControls: false}
+    }));
   },
 
   events: {

@@ -18,9 +18,7 @@
                 <div class="form-group row">
                     <select class="selectpicker" id="categories-input" multiple name="categories">
                         {{#each categories}}
-                            {{#with this}}
                                 <option value="{{attributes.name}}">{{ attributes.name }}</option>
-                            {{/with}}
                         {{/each}}
                     </select>
                 </div>

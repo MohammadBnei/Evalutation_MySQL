@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import Radio from 'backbone.radio';
 
 var CommentModel = Backbone.Model.extend({
   defaults: {
@@ -9,9 +10,19 @@ var CommentModel = Backbone.Model.extend({
     article_id: null,
     createdAt: null
   },
-  idAttribute: 'comment_id',
 
-  urlRoot: 'http://localhost:3000/comment'
+  events: {
+    destroy: 'onDestroy'
+  },
+  idAttribute: 'comment_id',
+  urlRoot: 'http://localhost:3000/comment',
+
+  onDestroy () {
+    Radio.channel('flash-channel').request('new:flash', {
+      type: 'info',
+      message: 'Comment removed !'
+    });
+  }
 });
 
 export default CommentModel;

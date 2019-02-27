@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha",
-    "start": "nodemon app"
+    "server": "nodemon app",
+    "client": "cd client & npm start",
+    "start": "concurrently --kill-others \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
   "dependencies": {
     "@joefallon/mysql-date": "*",
     "body-parser": "*",
+    "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "crypto-js": "*",

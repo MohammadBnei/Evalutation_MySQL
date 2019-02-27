@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import Radio from 'backbone.radio';
 import Comments from '../collection/Comments';
 
 var User = Backbone.Model.extend({
@@ -12,6 +13,10 @@ var User = Backbone.Model.extend({
 
   urlRoot: 'http://localhost:3000/user',
   idAttribute: 'user_id',
+
+  events: {
+    destroy: 'onDestroy'
+  },
 
   validation: {
     email: {
@@ -45,6 +50,13 @@ var User = Backbone.Model.extend({
     });
 
     return comments;
+  },
+
+  onDestroy () {
+    Radio.channel('flash-channel').request('new:flash', {
+      type: 'info',
+      message: 'User removed !'
+    });
   }
 });
 

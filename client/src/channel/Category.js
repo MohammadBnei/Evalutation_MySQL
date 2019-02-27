@@ -1,4 +1,5 @@
 import {MnObject} from 'backbone.marionette';
+import Radio from 'backbone.radio';
 import Categories from '../collection/Categories';
 
 var CategoryChannel = MnObject.extend({
@@ -12,7 +13,15 @@ var CategoryChannel = MnObject.extend({
     this.categories.fetch();
   },
 
+  categoriesByArticle (ids) {
+    return new Backbone.CollectionSubset({
+      parent: Categories,
+      filter: category => ids.includes(category.attributes.category_id)
+    });
+  },
+
   channelName: 'category-channel',
+  flashChannel: Radio.channel('flash-channel'),
 
   radioEvents: {
     'connect:category': (msg) => console.log(`${msg} connected to category channel`)
@@ -22,11 +31,17 @@ var CategoryChannel = MnObject.extend({
     'get:categories': 'onGetCategories',
     'get:category:article': 'onGetCategoryArticle',
     'get:categories:id:by:name': 'onGetCategoriesIdByName',
-    'set:categories': 'onSetCategories'
+    'set:categories': 'onSetCategories',
+    'add:category': 'onAddCategory'
   },
 
   onGetCategoryArticle (ids) {
-    return this.categories.find(category => ids.includes(category.attributes.category_id));
+    let categories = [];
+
+    ids.forEach(id => {
+      categories.push(this.categories.findWhere({category_id: id}));
+    });
+    return new Categories(categories);
   },
 
   onGetCategories () {
@@ -40,8 +55,21 @@ var CategoryChannel = MnObject.extend({
   onGetCategoriesIdByName (names) {
     let categories = this.categories.models.filter((category) => names.includes(category.attributes.name)).map(category => category.attributes.category_id);
 
-    console.log({categories});
     return categories;
+  },
+
+  onAddCategory (values) {
+    this.categories.create(values, {
+      success: () => this.flashChannel.request('new:flash', {
+        type: 'success',
+        message: 'New category saved'
+      }),
+      error: err => this.flashChannel.request('new:flash', {
+        type: 'error',
+        message: 'An error occured',
+        error: err
+      })
+    });
   }
 });
 

@@ -13,6 +13,7 @@
   "dependencies": {
     "backbone": "*",
     "backbone-validation": "*",
+    "backbone.collectionsubset": "^0.1.1",
     "backbone.marionette": "*",
     "bootstrap": "*",
     "cloudinary": "^1.13.2",
