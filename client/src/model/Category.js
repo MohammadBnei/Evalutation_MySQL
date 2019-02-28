@@ -8,9 +8,10 @@ var Category = Backbone.Model.extend({
     createdAt: ''
   },
 
-  events: {
-    destroy: 'onDestroy'
+  initialize () {
+    this.on('destroy', this.onDestroy, this);
   },
+
   idAttribute: 'category_id',
   urlRoot: 'http://localhost:3000/category',
 

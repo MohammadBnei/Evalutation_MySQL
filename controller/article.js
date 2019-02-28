@@ -76,9 +76,6 @@ module.exports = {
     async searchArticle(req, res) {
         var words = req.body.words;
             categories = req.body.categories;
-
-        console.log({words, categories})
-
         try {
             let results = await articleModel.searchArticle(words, categories);
 

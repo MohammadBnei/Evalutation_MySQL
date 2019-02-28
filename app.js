@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.use(fileUpload());
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -60,7 +63,7 @@ process.on('unhandledRejection', error => console.error('Uncaught Error', error)
 
 app.use((req,res, next) => {
   req.setTimeout(5000, () => {  
-    console.log('timed out');
+    console.log('The server takes too long to respond, aborting...');
     req.abort();
   });
   next();

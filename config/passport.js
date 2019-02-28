@@ -18,7 +18,6 @@ module.exports = (app) => {
 
     // Creating the logic for the sign in of users
     passport.use(new Strategy(opts, async (payload, done) => {
-        console.log('Passport JWT Strategy');
         try {
             var user = await userModel.getUserById(payload.user_id);
 

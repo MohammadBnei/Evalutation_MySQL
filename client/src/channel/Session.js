@@ -14,10 +14,6 @@ var SessionChannel = MnObject.extend({
   mainChannel: Radio.channel('main-channel'),
   flashChannel: Radio.channel('flash-channel'),
 
-  radioEvents: {
-    'connect:session': (msg) => console.log(`${msg} connected to session`)
-  },
-
   radioRequests: {
     'get:token': 'onGetToken',
     'get:user': 'onGetUser',
@@ -29,7 +25,6 @@ var SessionChannel = MnObject.extend({
 
   initialize () {
     _.bindAll(this, 'serverLogin', 'serverLogout');
-    console.log('Session created!');
 
     var token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=([^;]*).*$)|^.*$/, '$1');
     var user_id = document.cookie.replace(/(?:(?:^|.*;\s*)user_id\s*=\s*([^;]*).*$)|^.*$/, '$1');

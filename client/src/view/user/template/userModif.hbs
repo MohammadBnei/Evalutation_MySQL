@@ -1,20 +1,56 @@
 <div class="container-fluid user-region">
     <div class="card">
-        <form id="modif-form">
+        <form id="creation-form">
             <div class="card-body">
-                <h5 class="card-title">
-                    <input class="form-control form-control-lg" type="text" placeholder="E-mail" name="email" value="{{email}}" required>
-                </h5>
-                <input class="form-control" type="text" placeholder="Name" name="name" value="{{name}}" required>
-                <input class="form-control" type="text" placeholder="Surname" name="surname" value="{{surname}}" required>
+                <h3 class="card-title">Create an User</h3>
+                <div class="form-group row">
+                    <label for="inputUserame" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="inputName" class="form-control" name="name" placeholder="Name" value="{{name}}">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="inputUserame" class="col-sm-2 col-form-label">Surname</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="inputSurname" name="surname" class="form-control" placeholder="Surname" value="{{surname}}">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputUserame" class="col-sm-2 col-form-label">Image</label>
+                    <div class="col-sm-10">
+                        <input type="file" id="inputImage" name="img" class="form-control cloudinary-fileupload" data-cloudinary-field="image_upload" accept="image/x-png,image/gif,image/jpeg">
+                    </div>                    
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" value="{{email}}">
+                    </div>                    
+                </div>
+                
+                <hr>
+
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" >
+                    </div>                    
+                </div>
+
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="isAdmin" value="0" autocomplete="off" checked> User
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="isAdmin" value="1" autocomplete="off"> Admin
+                </label>
             </div>
-            <div class="row card-footer text-muted">
+            <div class="row card-footer text-muted text-center">
                 <div class="col align-self-start" >
                     <button type="submit" id="save-button" class="btn btn-success">Save</button>
                     <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
-                </div>
-                <div class="col align-self-center text-right align-middle h-100 d-inline-block">
-                    Created : {{userCreatedTime}}
                 </div>
             </div>
         </form>

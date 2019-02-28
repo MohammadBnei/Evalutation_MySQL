@@ -11,9 +11,10 @@ var CommentModel = Backbone.Model.extend({
     createdAt: null
   },
 
-  events: {
-    destroy: 'onDestroy'
+  initialize () {
+    this.on('destroy', this.onDestroy, this);
   },
+
   idAttribute: 'comment_id',
   urlRoot: 'http://localhost:3000/comment',
 

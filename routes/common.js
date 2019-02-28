@@ -12,4 +12,10 @@ module.exports = (router) => {
 
     // Sign Out
     router.post('/session/signout', passport.authenticate('jwt', {session: false}), commonController.signOut)
+
+	// Image handling
+	router.post('/img', passport.authenticate('jwt', {session: false}), commonController.handleImage)
+
+	// Image replacing
+	router.post('/img/:old', passport.authenticate('jwt', {session: false}), commonController.replaceImage)
 };

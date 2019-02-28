@@ -26,8 +26,6 @@ module.exports = {
 
         if (results.length) results = categoryModel.getCategoriesFromArticles(results);
 
-        console.log(JSON.stringify(results))
-
         return results;
     },
 

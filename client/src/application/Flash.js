@@ -19,7 +19,6 @@ var FlashApp = Mn.Application.extend({
   },
 
   onNewFlash (flash) {
-    console.log(flash);
     this.flashs.unshift(flash);
   }
 });

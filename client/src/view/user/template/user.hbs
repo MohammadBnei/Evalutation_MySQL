@@ -1,5 +1,8 @@
 <div class="container-fluid user-region">
     <div class="card {{#unless isAdmin}} border-primary{{else}}border-dark{{/unless}}">
+        {{#if img}}
+            <img src="{{img}}" class="card-img-top" alt="user-image">
+        {{/if}}
         <div class="card-body">
             <h5 class="card-title">E-mail : {{email}}
             </h5>

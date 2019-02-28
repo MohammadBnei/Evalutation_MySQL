@@ -1,8 +1,9 @@
 const errorHandler = require('../util/errorHandler');
 const jwt = require('jsonwebtoken');
 const userModel = require('../model').userModel;
-const articleModel = require('../model').articleModel;
 const sha1 = require('crypto-js/sha1');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = {
     // Signup
@@ -39,7 +40,6 @@ module.exports = {
                 const payload = {user_id: user.user_id};
                 let token = jwt.sign(payload, 'secret');
                 res.status(200).send({message: 'Ok', token, user});
-                console.log('Logged In with email : ', user.email, token)
             })
 
         } catch (error) {
@@ -56,5 +56,42 @@ module.exports = {
     getSessionUser(req, res) {
         if (!req.user) res.status(401).send('No user connected');
         else res.status(200).send(req.user);
+    },
+
+    handleImage(req, res) {
+        var {
+			image
+		} = req.files;
+
+        try {
+			// If the user uploads an image, the next line moves it to the public folder.
+			if (image) {
+				image.mv(path.resolve(__dirname, '..', 'public', image.name));
+                res.status(200).send('Ok');
+			} else throw new Error ('There was no image');
+		} catch (error) {
+			console.log(error);
+			res.status(400).send(error);
+		}
+    },
+
+    replaceImage(req, res) {
+        var {
+			image
+		} = req.files;
+
+        var old = req.params.old;
+
+        try {
+			// If the user uploads an image, the next line moves it to the public folder.
+			if (image) {
+                fs.unlink(path.resolve(__dirname, '..', 'public', old))
+				image.mv(path.resolve(__dirname, '..', 'public', image.name));
+                res.status(200).send('Ok');
+			} else throw new Error ('There was no image');
+		} catch (error) {
+			console.log(error);
+			res.status(400).send(error);
+		}
     }
 };

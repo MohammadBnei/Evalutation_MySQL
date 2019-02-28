@@ -11,12 +11,12 @@ var User = Backbone.Model.extend({
     img: ''
   },
 
+  initialize () {
+    this.on('destroy', this.onDestroy, this);
+  },
+
   urlRoot: 'http://localhost:3000/user',
   idAttribute: 'user_id',
-
-  events: {
-    destroy: 'onDestroy'
-  },
 
   validation: {
     email: {

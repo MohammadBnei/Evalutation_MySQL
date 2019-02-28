@@ -13,8 +13,7 @@ module.exports = {
             if (!article.title || !article.content || !category) throw new Error('Some fields are empty');
 
             if (!category.length) throw new Error('No category selected');
-
-            console.log('Request Body ok for article creation');
+            
             next();   
         } catch (error) {
             console.error(error);

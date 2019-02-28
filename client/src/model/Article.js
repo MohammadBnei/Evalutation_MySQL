@@ -11,8 +11,8 @@ var Article = Backbone.Model.extend({
     categories: null
   },
 
-  events: {
-    destroy: 'onDestroy'
+  initialize () {
+    this.on('destroy', this.onDestroy, this);
   },
 
   idAttribute: 'article_id',

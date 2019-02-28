@@ -1,16 +1,47 @@
-import cloudinary from 'cloudinary-core';
+import {MnObject} from 'backbone.marionette';
 
-cloudinary.cloudinary_js_config();
+var ImgChannel = MnObject.extend({
+  default: {
+    name: null
+  },
 
-$(() => {
-  if ($.fn.cloudinary_fileupload)
-    $('input.cloudinary-fileupload[type=file]').cloudinary_fileupload();
+  channelName: 'img-channel',
+
+  radioRequests: {
+    'sync:img': 'onSyncImg',
+    'replace:img': 'onReplaceImg'
+  },
+
+  onSyncImg (image) {
+    console.log({image});
+    var formData = new FormData();
+
+    formData.append('image', image, image.uniqId);
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'http://localhost:3000/img', true);
+
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.sessionChannel.request('get:token'));
+
+    xhr.send(formData);
+  },
+
+  onReplaceImg (image, old) {
+    var formData = new FormData();
+
+    formData.append('image', image, image.uniqId);
+
+    var xhr = new XMLHttpRequest();
+
+    let url = 'http://localhost:3000/img' + old ? '/' + old : '';
+
+    xhr.open('POST', url, true);
+
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.sessionChannel.request('get:token'));
+
+    xhr.send(formData);
+  }
 });
 
-var cl = new cloudinary.Cloudinary({
-  cloud_name: 'grecvie',
-  api_key: '399657373367251',
-  api_secret: 'SuksbOzfKj58y6deiG18ZjJ_v9E'
-});
-
-module.exports = cl;
+export default ImgChannel;

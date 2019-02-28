@@ -23,10 +23,6 @@ var CategoryChannel = MnObject.extend({
   channelName: 'category-channel',
   flashChannel: Radio.channel('flash-channel'),
 
-  radioEvents: {
-    'connect:category': (msg) => console.log(`${msg} connected to category channel`)
-  },
-
   radioRequests: {
     'get:categories': 'onGetCategories',
     'get:category:article': 'onGetCategoryArticle',

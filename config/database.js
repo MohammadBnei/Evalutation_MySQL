@@ -27,6 +27,8 @@ pool.getConnection((err, connection) => {
     }
 });
 
+pool.on('enqueue', obj => console.log({obj})) // Log all queries
+
 pool.query = util.promisify(pool.query); // Magic happens here.
 
 module.exports = pool; //export the pool variable for globally use

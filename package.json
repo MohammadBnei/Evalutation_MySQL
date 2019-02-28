@@ -7,7 +7,7 @@
     "test": "mocha",
     "server": "nodemon app",
     "client": "cd client & npm start",
-    "start": "concurrently --kill-others \"npm run server\" \"npm run client\""
+    "start": "concurrently --kill-others \"npm:server\" \"npm:client\""
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,10 @@
     "eslint": "*",
     "eslint-plugin-node": "*",
     "express": "*",
+    "express-fileupload": "*",
     "express-mysql-session": "^2.1.0",
     "express-session": "*",
-    "express-validator": "^5.3.1",
+    "express-validator": "*",
     "install": "*",
     "jsonwebtoken": "^8.4.0",
     "mysql": "*",
@@ -49,7 +50,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "*",
     "session-memory-store": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",

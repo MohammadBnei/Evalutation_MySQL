@@ -44,7 +44,7 @@ module.exports = {
     },
 
     async deleteUser(id) {
-        await pool.query(sqlLib.buildDeleteQuery({user_id: id}));
+        let result = await pool.query(sqlLib.buildDeleteQuery({user_id: id}));
         if (result.affectedRows === 0) throw new Error('Wrong user id');
     },
     // End of CRUD Operations
