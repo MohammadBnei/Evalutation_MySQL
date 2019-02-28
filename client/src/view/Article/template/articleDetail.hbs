@@ -23,10 +23,10 @@
                         <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
                         <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
                     {{/if}}
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#write-comment" aria-expanded="false" aria-controls="write-comment">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#write-comment-{{viewId}}" aria-expanded="false" aria-controls="write-comment-{{viewId}}">
                         Write a comment
                     </button>
-                    <div class="collapse" id="write-comment">
+                    <div class="collapse" id="write-comment-{{viewId}}">
                         <form id="comment-form">
                             <input class="form-control" id="comment-input" placeholder="Your comment...">
                             <button type="button" id="save-comment" class="btn btn-primary mb-2">Send</button>

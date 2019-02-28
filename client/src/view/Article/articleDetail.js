@@ -6,6 +6,8 @@ import CommentModel from '../../model/Comment';
 import Comments from '../../collection/Comments';
 import CommentsView from '../comment/Comments';
 import CategoriesView from '../category/Categories';
+// eslint-disable-next-line node/no-extraneous-require
+const uuidv1 = require('uuid/v1');
 
 var articleDetailTemplate = require('./template/articleDetail.hbs');
 
@@ -49,7 +51,8 @@ var ArticleDetailView = View.extend({
   templateContext () {
     return {
       articlePostTime: moment(this.model.attributes.createdAt).format('LLLL'),
-      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').get('user_id')
+      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').get('user_id'),
+      viewId: uuidv1()
     };
   },
 
