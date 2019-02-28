@@ -6,23 +6,25 @@ var userCreateTemplate = require('./template/userCreate.hbs');
 
 var UserView = View.extend({
   events: {
-    submit: 'saveUser',
-    'click #cancel-button': 'cancel'
+    submit: 'saveUser'
+  },
+
+  triggers: {
+    'click #cancel-button': 'click:close'
   },
 
   template: userCreateTemplate,
+
+  templateContext () {
+    return {
+      isAdmin: this.sessionChannel.request('get:user').get('isAdmin')
+    };
+  },
 
   sessionChannel: Radio.channel('session-channel'),
   mainChannel: Radio.channel('main-channel'),
   flashChannel: Radio.channel('flash-channel'),
   imgChannel: Radio.channel('img-channel'),
-
-  cancel (e) {
-    e.preventDefault();
-    this.model.destroy();
-
-    this.mainChannel.request('show:articles:view');
-  },
 
   saveUser (e) {
     e.preventDefault();
@@ -47,8 +49,15 @@ var UserView = View.extend({
       values[element.name] = element.value;
     });
 
-    this.model.save(values);
-    this.mainChannel.request('show:users:view');
+    this.model.save(values, {
+      success: () => {
+        this.flashChannel.request('new:flash', {
+          type: 'success',
+          message: 'User created !'
+        });
+        this.mainChannel.request('show:users:view');
+      }
+    });
   }
 });
 

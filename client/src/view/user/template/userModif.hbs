@@ -1,6 +1,6 @@
 <div class="container-fluid user-region">
     <div class="card">
-        <form id="creation-form">
+        <form id="modif-form">
             <div class="card-body">
                 <h3 class="card-title">Create an User</h3>
                 <div class="form-group row">
@@ -39,13 +39,14 @@
                         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" >
                     </div>                    
                 </div>
-
-                <label class="btn btn-secondary active">
-                    <input type="radio" name="isAdmin" value="0" autocomplete="off" checked> User
-                </label>
-                <label class="btn btn-secondary">
-                    <input type="radio" name="isAdmin" value="1" autocomplete="off"> Admin
-                </label>
+                {{#if isAdmin}}
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="isAdmin" value="0" autocomplete="off" checked> User
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="isAdmin" value="1" autocomplete="off"> Admin
+                    </label>
+                {{/if}}
             </div>
             <div class="row card-footer text-muted text-center">
                 <div class="col align-self-start" >

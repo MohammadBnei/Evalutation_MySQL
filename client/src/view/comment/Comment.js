@@ -7,16 +7,21 @@ var commentTemplate = require('./template/comment.hbs');
 var CommentView = View.extend({
   events: {
     'click #remove-comment-button': 'removeComment',
-    'click #modify-button': 'modifyComment',
-    'click #cancel-button': 'render'
+    'click #modify-button': 'modifyComment'
+  },
+
+  childViewEvents: {
+    'click:close': 'render'
   },
 
   template: commentTemplate,
 
   templateContext () {
+    var currentUser = this.sessionChannel.request('get:user');
+
     return {
       commentPostTime: moment(this.model.attributes.createdAt).format('lll'),
-      isAdmin: this.sessionChannel.request('get:user').attributes.isAdmin
+      modif: this.model.get('user_id') === currentUser.get('user_id') || currentUser.get('isAdmin')
     };
   },
 

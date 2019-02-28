@@ -11,6 +11,7 @@ var FlashView = View.extend({
 
   onRender () {
     this.$el.addClass('alert-' + this.model.attributes.type);
+    this.$el.focus();
   },
 
   onAttach () {

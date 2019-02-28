@@ -49,7 +49,7 @@ var ArticleDetailView = View.extend({
   templateContext () {
     return {
       articlePostTime: moment(this.model.attributes.createdAt).format('LLLL'),
-      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').attributes.user_id
+      isCreator: () => this.model.attributes.user_id === this.sessionChannel.request('get:user').get('user_id')
     };
   },
 
@@ -70,9 +70,10 @@ var ArticleDetailView = View.extend({
     e.preventDefault();
 
     var user = this.sessionChannel.request('get:user').attributes;
+    var content = $('#comment-input').val();
 
     var newComment = new CommentModel({
-      content: this.$('#comment-input').val(),
+      content,
       user_id: user.user_id,
       article_id: this.model.attributes.article_id
     });

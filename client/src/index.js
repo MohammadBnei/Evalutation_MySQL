@@ -14,15 +14,13 @@ Backbone.sync = (method, model, options) => {
   }
 
   if (method !== 'delete') {
-    let error = options.error;
     let flashChannel = Radio.channel('flash-channel');
 
     options.error = err => {
       flashChannel.request('new:flash', {
         type: 'danger',
-        message: 'An error occured, sorry...'
+        message: err.responseText
       });
-      error(err);
     };
   }
 

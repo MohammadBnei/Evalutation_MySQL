@@ -4,8 +4,11 @@ var categoryCreateTemplate = require('./template/categoryModif.hbs');
 
 var CategoryCreate = View.extend({
   events: {
-    submit: 'saveCategory',
-    'click #cancel-button': 'onCancel'
+    submit: 'saveCategory'
+  },
+
+  triggers: {
+    'click #cancel-button': 'click:close'
   },
 
   template: categoryCreateTemplate,
@@ -25,10 +28,6 @@ var CategoryCreate = View.extend({
 
     this.categoryChannel.request('add:category', values);
 
-    this.mainChannel.request('show:articles:view');
-  },
-
-  onCancel () {
     this.mainChannel.request('show:articles:view');
   }
 });

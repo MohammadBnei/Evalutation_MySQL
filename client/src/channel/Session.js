@@ -24,7 +24,7 @@ var SessionChannel = MnObject.extend({
   },
 
   initialize () {
-    _.bindAll(this, 'serverLogin', 'serverLogout');
+    _.bindAll(this, 'serverLogin', 'serverLogout', 'loginError');
 
     var token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=([^;]*).*$)|^.*$/, '$1');
     var user_id = document.cookie.replace(/(?:(?:^|.*;\s*)user_id\s*=\s*([^;]*).*$)|^.*$/, '$1');
@@ -54,7 +54,7 @@ var SessionChannel = MnObject.extend({
         withCredentials: false
       },
       success: this.serverLogin,
-      error: (error) => console.error(error)
+      error: this.loginError
     });
   },
 
@@ -103,6 +103,13 @@ var SessionChannel = MnObject.extend({
 
     this.mainChannel.request('show:login:view');
     this.getChannel().trigger('loggedOut');
+  },
+
+  loginError (err) {
+    this.flashChannel.request('new:flash', {
+      type: 'danger',
+      message: err.responseText
+    });
   },
 
   deleteAllCookies () {

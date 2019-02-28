@@ -23,13 +23,6 @@ var CommentModel = Backbone.Model.extend({
       type: 'info',
       message: 'Comment removed !'
     });
-  },
-
-  save (content, options) {
-    Backbone.Model.prototype.save.call(this, {
-      comment_id: this.get('comment_id'),
-      content
-    }, options);
   }
 });
 

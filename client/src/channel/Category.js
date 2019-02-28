@@ -1,6 +1,7 @@
 import {MnObject} from 'backbone.marionette';
 import Radio from 'backbone.radio';
 import Categories from '../collection/Categories';
+import Category from '../model/Category';
 
 var CategoryChannel = MnObject.extend({
   default: {
@@ -55,17 +56,16 @@ var CategoryChannel = MnObject.extend({
   },
 
   onAddCategory (values) {
-    this.categories.create(values, {
+    var newCategory = new Category(values);
+
+    newCategory.save({
       success: () => this.flashChannel.request('new:flash', {
         type: 'success',
-        message: 'New category saved'
-      }),
-      error: err => this.flashChannel.request('new:flash', {
-        type: 'error',
-        message: 'An error occured',
-        error: err
+        message: 'Category created'
       })
     });
+
+    this.categories.add(newCategory);
   }
 });
 

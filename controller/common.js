@@ -39,6 +39,7 @@ module.exports = {
                 if (err) throw new Error (err);
                 const payload = {user_id: user.user_id};
                 let token = jwt.sign(payload, 'secret');
+                user.password = null;
                 res.status(200).send({message: 'Ok', token, user});
             })
 
@@ -99,7 +100,7 @@ module.exports = {
         var image = req.params.image;
 
         try {
-            fs.unlink(path.resolve(__dirname, '..', 'public', image), err => console.log(err));
+            fs.unlink(path.resolve(__dirname, '..', 'public', image), err => new Error(err));
             res.status(200).send('Ok');
 		} catch (error) {
 			console.log(error);

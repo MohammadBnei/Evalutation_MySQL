@@ -10,6 +10,10 @@ var UserModifView = View.extend({
     submit: 'saveUser'
   },
 
+  triggers: {
+    'click #cancel-button': 'click:close'
+  },
+
   regions: {
     main: '.user-region'
   },
@@ -25,7 +29,8 @@ var UserModifView = View.extend({
 
   templateContext () {
     return {
-      userCreatedTime: moment(this.model.attributes.createdAt).format('lll')
+      userCreatedTime: moment(this.model.attributes.createdAt).format('lll'),
+      isAdmin: this.sessionChannel.request('get:user').get('isAdmin')
     };
   },
 
@@ -53,11 +58,18 @@ var UserModifView = View.extend({
       }
 
     this.$('#modif-form').serializeArray().forEach(element => {
-      if (this.model.attributes[element.name] !== element.value)
-        values[element.name] = element.value;
+      values[element.name] = element.value;
     });
 
-    this.model.save(values);
+    this.model.save(values, {
+      success: () => {
+        this.flashChannel.request('new:flash', {
+          type: 'success',
+          message: 'User modified !'
+        });
+        this.mainChannel.request('show:articles:view');
+      }
+    });
   }
 });
 

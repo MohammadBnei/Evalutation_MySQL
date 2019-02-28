@@ -11,6 +11,10 @@ var CategoryView = View.extend({
     'click #modify-button': 'modifyCategory'
   },
 
+  childViewEvents: {
+    'click:close': 'render'
+  },
+
   regions: {
     main: '.category-region'
   },

@@ -10,8 +10,11 @@ var UserView = View.extend({
   events: {
     'click #modify-button': 'goToModifyView',
     'click #remove-button': 'removeUser',
-    'click #cancel-button': 'render',
     'click #comments-button': 'goToComments'
+  },
+
+  childViewEvents: {
+    'click:close': 'render'
   },
 
   regions: {

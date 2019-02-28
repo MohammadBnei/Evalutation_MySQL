@@ -65,9 +65,15 @@ var ArticleModifView = View.extend({
 
     values.categories = categories;
 
-    this.model.save(values);
-
-    this.trigger('click:cancel');
+    this.model.save(values, {
+      success: () => {
+        this.flashChannel.request('new:flash', {
+          type: 'success',
+          message: 'Article modified !'
+        });
+        this.mainChannel.request('show:articles:view');
+      }
+    });
   }
 });
 

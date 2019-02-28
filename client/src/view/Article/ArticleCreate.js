@@ -64,7 +64,13 @@ var ArticleView = View.extend({
     values.categories = categories;
 
     this.model.save(values, {
-      success: () => this.mainChannel.request('show:articles:view')
+      success: () => {
+        this.flashChannel.request('new:flash', {
+          type: 'success',
+          message: 'Article created !'
+        });
+        this.mainChannel.request('show:articles:view');
+      }
     });
   }
 });

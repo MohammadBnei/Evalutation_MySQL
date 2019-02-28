@@ -20,6 +20,7 @@ module.exports = {
             let result = await userModel.getUserById(req.params.id);
 
             if (result.length) result = result[0];
+            result.password = null;
             
             res.status(200).send(result);
         } catch (error) {
@@ -30,6 +31,9 @@ module.exports = {
     async getUsers(req, res) {
         try {
             let results = await userModel.getUsers();
+            results.forEach(user => {
+                user.password = null;
+            });
         
             res.status(200).send(results);
         } catch (error) {

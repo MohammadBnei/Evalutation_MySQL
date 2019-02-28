@@ -5,9 +5,11 @@
     <div class="col-sm">
         <p>{{content}}</p>
     </div>
-    <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
+    {{#if modif}}
+        <button type="button" id="modify-button" class="btn btn-warning">Modify</button>
+    {{/if}}
     <div class="col-auto">
-        {{#if isAdmin}}
+        {{#if modif}}
             <button type="button" class="close" id="remove-comment-button" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
