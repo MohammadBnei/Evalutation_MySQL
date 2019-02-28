@@ -20,10 +20,15 @@ You can search article or user by key words.
 On the Account menu (top), you can see your informations and all your comments (possibly update/delete)
  
 As an admin, you can :
- *Create article
- *Update/delete your articles
- *Create user or admin account
- *Update/delete user account
- *Create/Read/Update user comments
+
+  *Create article
+  
+  *Update/delete your articles
+  
+  *Create user or admin account
+  
+  *Update/delete user account
+  
+  *Create/Read/Update user comments
  
 There is a flash message system telling you if there is any bugs on the server side, or simply informing you.
