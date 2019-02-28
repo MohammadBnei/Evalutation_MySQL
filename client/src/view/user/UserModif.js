@@ -25,7 +25,7 @@ var UserModifView = View.extend({
 
   templateContext () {
     return {
-      userCreatedTime: moment(this.model.attributes.createdAt).fromNow()
+      userCreatedTime: moment(this.model.attributes.createdAt).format('lll')
     };
   },
 
@@ -41,8 +41,9 @@ var UserModifView = View.extend({
 
     if (file)
       if (file.type.match('image.*')) {
-        file.uniqId = uuidv1();
-        this.imgChannel.request('replace:img', file, this.model.attributes.img);
+        file.uniqId = uuidv1() + file.name.match(/\.([A-z])\w+/gi);
+        this.imgChannel.request('replace:img', {image: file, old: this.model.attributes.img});
+        values.img = file.uniqId;
       } else {
         this.flashChannel.request('new:flash', {
           type: 'danger',
@@ -52,10 +53,9 @@ var UserModifView = View.extend({
       }
 
     this.$('#modif-form').serializeArray().forEach(element => {
-      values[element.name] = element.value;
+      if (this.model.attributes[element.name] !== element.value)
+        values[element.name] = element.value;
     });
-
-    values.img = file.uniqId;
 
     this.model.save(values);
   }

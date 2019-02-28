@@ -15,7 +15,7 @@ module.exports = (router) => {
 	router.get('/comments', commentController.getComments);
 
 	// Update a comment (will update every parameters present in the JSON object passed)
-	router.put('/comment/:id', commentController.updateComment);
+	router.put('/comment/:comment_id', commentController.updateComment);
 
 	// Delete an comment by its id
 	router.delete('/comment/:id', commentController.deleteComment);

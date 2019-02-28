@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.port || 3000;
 
 // Making the default folder 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, '/public')));
 
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());

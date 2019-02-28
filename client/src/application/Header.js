@@ -11,7 +11,7 @@ var HeaderApp = Mn.Application.extend({
 
   onStart () {
     this.listenTo(this.sessionChannel, 'loggedIn', this.showHeader, this);
-    this.listenTo(this.sessionChannel, 'loggedIOut', this.hideHeader, this);
+    this.listenTo(this.sessionChannel, 'loggedOut', this.hideHeader, this);
   },
 
   async showHeader () {

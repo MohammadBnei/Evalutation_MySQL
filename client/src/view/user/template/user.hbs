@@ -1,7 +1,7 @@
 <div class="container-fluid user-region">
     <div class="card {{#unless isAdmin}} border-primary{{else}}border-dark{{/unless}}">
         {{#if img}}
-            <img src="{{img}}" class="card-img-top" alt="user-image">
+            <img src="http://localhost:3000/static/{{img}}" class="card-img-top" alt="user-image" style="width: 18rem;">
         {{/if}}
         <div class="card-body">
             <h5 class="card-title">E-mail : {{email}}
@@ -16,11 +16,15 @@
                     <button type="button" id="modify-button" class="btn btn-primary">Modify</button>
                     <button type="button" id="remove-button" class="btn btn-danger">Remove</button>
                     {{/if}}
+                    <button type="button" id="comments-button" class="btn btn-primary">Comments</button>
                 </div>
                 <div class="col align-self-center text-right align-middle h-100 d-inline-block">
                     Created : {{userCreatedTime}}
                 </div>
             </div>
         </div>
+    </div>
+    <div id="comments-region">
+        
     </div>
 </div>

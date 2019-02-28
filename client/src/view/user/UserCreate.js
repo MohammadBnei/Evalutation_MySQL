@@ -32,9 +32,9 @@ var UserView = View.extend({
 
     if (file)
       if (file.type.match('image.*')) {
-        console.log({file});
-        file.uniqId = uuidv1();
+        file.uniqId = uuidv1() + file.name.match(/\.([A-z])\w+/gi);
         this.imgChannel.request('sync:img', file);
+        values.img = file.uniqId;
       } else {
         this.flashChannel.request('new:flash', {
           type: 'danger',
@@ -46,8 +46,6 @@ var UserView = View.extend({
     this.$('#creation-form').serializeArray().forEach(element => {
       values[element.name] = element.value;
     });
-
-    values.img = file.uniqId;
 
     this.model.save(values);
     this.mainChannel.request('show:users:view');

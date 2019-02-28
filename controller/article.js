@@ -41,6 +41,8 @@ module.exports = {
         try {
             let article = req.body;
             let categories = req.body.categories;
+            article.categories = null;
+            
             let result = await articleModel.updateArticle(article, categories);
 
             res.status(200).send(result);

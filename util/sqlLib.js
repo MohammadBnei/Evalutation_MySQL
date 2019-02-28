@@ -72,7 +72,7 @@ module.exports = {
         querySet += ' createdAt = NOW()'
 
         var query = `UPDATE ${queryParams.table} SET ${querySet} WHERE ${queryParams.idSet}`
-        console.log({query, queryParams});
+        console.log({query});
         return query;
     },
 

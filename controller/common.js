@@ -85,10 +85,22 @@ module.exports = {
         try {
 			// If the user uploads an image, the next line moves it to the public folder.
 			if (image) {
-                fs.unlink(path.resolve(__dirname, '..', 'public', old))
+                fs.unlink(path.resolve(__dirname, '..', 'public', old), err => console.log(err))
 				image.mv(path.resolve(__dirname, '..', 'public', image.name));
                 res.status(200).send('Ok');
 			} else throw new Error ('There was no image');
+		} catch (error) {
+			console.log(error);
+			res.status(400).send(error);
+		}
+    },
+
+    deleteImage(req, res) {
+        var image = req.params.image;
+
+        try {
+            fs.unlink(path.resolve(__dirname, '..', 'public', image), err => console.log(err));
+            res.status(200).send('Ok');
 		} catch (error) {
 			console.log(error);
 			res.status(400).send(error);

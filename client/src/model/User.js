@@ -57,6 +57,8 @@ var User = Backbone.Model.extend({
       type: 'info',
       message: 'User removed !'
     });
+
+    Radio.channel('img-channel').request('delete:img', this.get('img'));
   }
 });
 

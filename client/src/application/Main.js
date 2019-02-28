@@ -18,6 +18,7 @@ import CategoryCreate from '../view/category/CategoryCreate';
 import Category from '../model/Category';
 import CommentsView from '../view/comment/Comments';
 import CategoriesView from '../view/category/Categories';
+import ImgChannel from '../channel/imgUpload';
 
 const MainApp = Mn.Application.extend({
   region: '#content-region',
@@ -45,9 +46,11 @@ const MainApp = Mn.Application.extend({
     });
     const sessionChannel = new SessionChannel();
     const categoryChannel = new CategoryChannel();
+    const imgChannel = new ImgChannel();
 
     this.sessionChannel = sessionChannel.getChannel();
     this.categoryChannel = categoryChannel.getChannel();
+    this.imgChannel = imgChannel.getChannel();
 
     if (this.sessionChannel.request('get:user')) this.showArticlesView();
     else this.showLoginView();

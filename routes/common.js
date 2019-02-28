@@ -18,4 +18,7 @@ module.exports = (router) => {
 
 	// Image replacing
 	router.post('/img/:old', passport.authenticate('jwt', {session: false}), commonController.replaceImage)
+
+	// Image deleting
+	router.delete('/img/:image', passport.authenticate('jwt', {session: false}), commonController.deleteImage)
 };

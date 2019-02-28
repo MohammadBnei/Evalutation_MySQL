@@ -41,6 +41,7 @@ module.exports = {
     async updateComment(req, res) {
         try {
             let comment = req.body;
+            comment.name = null;
             let result = await commentModel.updateComment(comment);
 
             res.status(200).send(result);

@@ -2,25 +2,28 @@ import {View} from 'backbone.marionette';
 import moment from 'moment';
 import Radio from 'backbone.radio';
 import UserModif from './UserModif';
-//import userModif from './UsereModif';
+import CommentsView from '../comment/Comments';
+import Comments from '../../collection/Comments';
 var userTemplate = require('./template/user.hbs');
 
 var UserView = View.extend({
   events: {
     'click #modify-button': 'goToModifyView',
     'click #remove-button': 'removeUser',
-    'click #cancel-button': 'render'
+    'click #cancel-button': 'render',
+    'click #comments-button': 'goToComments'
   },
 
   regions: {
-    main: '.user-region'
+    main: '.user-region',
+    comments: '#comments-region'
   },
 
   template: userTemplate,
 
   templateContext () {
     return {
-      userCreatedTime: moment(this.model.attributes.createdAt).fromNow(),
+      userCreatedTime: moment(this.model.attributes.createdAt).format('lll'),
       modify: () => {
         if (this.model.attributes.user_id === this.sessionChannel.request('get:user').attributes.user_id) return true;
         if (! this.model.attributes.isAdmin) return true;
@@ -39,6 +42,13 @@ var UserView = View.extend({
 
   goToModifyView () {
     this.showChildView('main', new UserModif({model: this.model}));
+  },
+
+  goToComments () {
+    var comments = new Comments();
+
+    comments.fetchCommentsByUser(this.model.get('user_id'));
+    this.showChildView('comments', new CommentsView({collection: comments}));
   }
 });
 

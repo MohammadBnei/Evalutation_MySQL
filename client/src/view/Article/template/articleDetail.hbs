@@ -1,5 +1,8 @@
 <div class="container-fluid article-region">
     <div class="card">
+        {{#if img}}
+            <img src="http://localhost:3000/static/{{img}}" class="card-img-top" alt="article-image" style="width: 18rem;">
+        {{/if}}
         <div class="card-body">
             <div class="row">
                 <div class="col">

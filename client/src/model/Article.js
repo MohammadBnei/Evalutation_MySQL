@@ -23,6 +23,8 @@ var Article = Backbone.Model.extend({
       type: 'info',
       message: 'Article removed !'
     });
+
+    Radio.channel('img-channel').request('delete:img', this.get('img'));
   }
 });
 
