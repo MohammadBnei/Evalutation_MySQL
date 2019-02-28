@@ -26,4 +26,4 @@ As an admin, you can :
  *Update/delete user account
  *Create/Read/Update user comments
  
-There is a flash message system informing you on any bugs on the server side, or simply informing you.
+There is a flash message system telling you if there is any bugs on the server side, or simply informing you.
